@@ -1,8 +1,9 @@
 import axios from 'axios';
 import parseLinkHeader from 'parse-link-header';
+import token from '../../token';
 
 const headers = {
-  "Authorization": "token e2c9044bab05a6c87624c2c48a65b614178d7b80"
+  "Authorization": `token ${token}`
 }
 const PER_PAGE = 30;
 
