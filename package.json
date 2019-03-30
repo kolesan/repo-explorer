@@ -5,8 +5,11 @@
   "dependencies": {
     "@types/jest": "24.0.11",
     "@types/node": "11.12.2",
+    "@types/parse-link-header": "^1.0.0",
     "@types/react": "16.8.10",
     "@types/react-dom": "16.8.3",
+    "axios": "^0.18.0",
+    "parse-link-header": "^1.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8",
@@ -16,6 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "integrationTests": "react-scripts test --no-watch --testMatch=[ \"**/?(*.)+(integration).[jt]s?(x)\" ]",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
