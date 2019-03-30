@@ -12,13 +12,24 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### Testing
+### `Tests`
 
-All Integration tests `npm run integrationTests`
-Integration tests by pattern `npm run integrationTests -- --testPathPattern=RepoList`
+`npm test` - runs all unit tests.
+Launches the test runner in the interactive watch mode.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`npm test -- --no-watch` - runs all the tests once without the watch mode.
+
+### `Integration tests`
+
+Integration tests are special tests that interract with real world apis.<br>
+Integration test suite files end with `.test.integration.ts`
+
+`npm run integrationTests` - runs all integration tests.
+
+`npm run integrationTests -- --testPathPattern=RepoList` - runs integration tests that match the provided pattern (`RepoList` in this case).
+
+These tests have to be kept up to date since their asserts are susceptible to outside world changes.<br>
+If they fail unexpectedly, first check if the data they are working with has not changed.
 
 ### `npm run build`
 
