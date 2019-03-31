@@ -1,7 +1,6 @@
 import axios from 'axios';
 import parseLinkHeader from 'parse-link-header';
 import token from '../../token';
-import { GitHubRepoParticipation } from '../types/GithubApiTypes';
 
 const PER_PAGE = 30;
 
@@ -26,7 +25,7 @@ export async function contributorCount(owner: string, repo: string): Promise<num
   return firstPageResponse.data.length;
 }
 
-export async function commitStats(owner: string, repo: string): Promise<GitHubRepoParticipation> {
+export async function commitStats(owner: string, repo: string): Promise<number[]> {
   const { data: participation } = await client.get(`/repos/${owner}/${repo}/stats/participation`);
-  return participation;
+  return participation.all;
 }
