@@ -6,7 +6,8 @@ List items can be clicked on to enter a detailed view for a single repository.
 ## Github token
 
 This app uses GitHub api v4 which requires you to be authenticated.<br>
-You have to provide access token in a special file `token.js` in your root directory for this application to work.
+You have to provide access token in a special file `token.js` in your root directory for this application to work.<br>
+You will need to grant `public_repo` and `gist` scopes to the access token in order for star/unstar functionality to work.
 
 Example of `token.js` contents:
 ```
@@ -40,6 +41,8 @@ Can be combined with `--testPathPattern`
 
 These tests have to be kept up to date since their asserts are susceptible to outside world changes.<br>
 If they fail unexpectedly, first check if the data they are working with has not changed.
+
+You will need to provide [github access token](#github-token) for these tests to work.
 
 ## Building production bundle
 
