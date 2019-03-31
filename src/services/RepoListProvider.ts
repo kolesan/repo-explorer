@@ -1,7 +1,8 @@
 import { GraphQLClient } from 'graphql-request';
 import token from '../../token';
 import log from '../utils/Logging';
-import { GitHubRepo, RepoSearchParams, RepoSearchResult, GithubRepoSearchResponse, Repo } from '../types/types';
+import { RepoSearchParams, RepoSearchResult, Repo } from '../types/RepoListTypes';
+import { GithubRepoSearchResponse, GitHubRepo } from '../types/GithubApiTypes';
 
 const client = new GraphQLClient('https://api.github.com/graphql', {
   headers: {
