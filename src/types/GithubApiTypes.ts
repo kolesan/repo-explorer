@@ -29,4 +29,11 @@ export interface GitHubRepo {
   readonly issues: {
     readonly totalCount: number;
   }
+  readonly defaultBranchRef: {
+    readonly target: {
+      readonly history: {
+        readonly totalCount: number;
+      }
+    }
+  }
 }

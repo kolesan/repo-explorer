@@ -21,7 +21,8 @@ test(`returns a list of repositories from github api that match the provided que
         language: 'TypeScript',
         starCount: 13,
         forkCount: 4,
-        issueCount: 5
+        issueCount: 5,
+        commitCount: 46
       },
       {
         name: 'react-ts-table',
@@ -33,7 +34,8 @@ test(`returns a list of repositories from github api that match the provided que
         language: 'TypeScript',
         starCount: 0,
         forkCount: 0,
-        issueCount: 0 
+        issueCount: 0,
+        commitCount: 78
       },
       { 
         name: 'react_table_ts',
@@ -45,7 +47,8 @@ test(`returns a list of repositories from github api that match the provided que
         language: 'TypeScript',
         starCount: 0,
         forkCount: 0,
-        issueCount: 0 
+        issueCount: 0,
+        commitCount: 2
       } 
     ]
   });

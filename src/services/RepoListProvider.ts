@@ -3,6 +3,7 @@ import token from '../../token';
 import log from '../utils/Logging';
 import { RepoSearchParams, RepoSearchResult, Repo } from '../types/RepoListTypes';
 import { GithubRepoSearchResponse, GitHubRepo } from '../types/GithubApiTypes';
+const _get = require('lodash/get');
 
 const client = new GraphQLClient('https://api.github.com/graphql', {
   headers: {
@@ -39,6 +40,15 @@ const query = `
           issues {
             totalCount
           }
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history {
+                  totalCount
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -58,19 +68,20 @@ export default async function repoList({ searchQuery, startCursor, count }: Repo
 
 function toRepoObject(gitHubRepo: GitHubRepo): Repo {
   const { name, owner, description, licenseInfo, url,
-    viewerHasStarred, primaryLanguage, stargazers, forkCount, issues 
+    viewerHasStarred, primaryLanguage, stargazers, forkCount, issues, defaultBranchRef
   } = gitHubRepo;
 
   return {
     name: name,
-    owner: owner && owner.login,
+    owner: _get(owner, 'login', null),
     description,
-    license: licenseInfo && licenseInfo.name,
+    license: _get(licenseInfo, 'name', null),
     url,
     starred: viewerHasStarred,
-    language: primaryLanguage && primaryLanguage.name,
-    starCount: stargazers && stargazers.totalCount,
+    language: _get(primaryLanguage, 'name', null),
+    starCount: _get(stargazers, 'totalCount', null),
     forkCount,
-    issueCount: issues && issues.totalCount
+    issueCount: _get(issues, 'totalCount', null),
+    commitCount: _get(defaultBranchRef, 'target.history.totalCount', null)
   }
 }

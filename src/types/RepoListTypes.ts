@@ -21,4 +21,5 @@ export interface Repo {
   readonly starCount: number;
   readonly forkCount: number;
   readonly issueCount: number;
+  readonly commitCount: number;
 }
