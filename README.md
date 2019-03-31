@@ -3,9 +3,20 @@
 A web app that let's you search github repositories and displays results in a list.<br>
 List items can be clicked on to enter a detailed view for a single repository.
 
+## Github token
+
+This app uses GitHub api v4 which requires you to be authenticated.<br>
+You have to provide access token in a special file `token.js` in your root directory for this application to work.
+
+Example of `token.js` contents:
+```
+export default "358235691abc360e95e96eec1f9ca35c979acf92";
+```
+
 ## Development
 
 `npm start` - Runs the app in development mode on `http://localhost:3000`
+
 
 ## Tests
 
