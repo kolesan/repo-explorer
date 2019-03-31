@@ -11,7 +11,7 @@ const client = new GraphQLClient('https://api.github.com/graphql', {
   },
 })
 
-const query = `
+const getReposQuery = `
   query getRepos($searchQuery: String!, $startCursor: String, $count: Int!){
     search(query: $searchQuery, after: $startCursor, first: $count, type:REPOSITORY){
       pageInfo {
@@ -57,7 +57,7 @@ const query = `
 `;
 
 export default async function repoList({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
-  const response: GithubRepoSearchResponse = await client.request(query, { searchQuery, startCursor, count });
+  const response: GithubRepoSearchResponse = await client.request(getReposQuery, { searchQuery, startCursor, count });
   // log(JSON.stringify(response, null, "  "));
   const { search } = response;
   return {
