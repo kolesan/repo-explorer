@@ -1,3 +1,4 @@
+//V3
 export interface GithubRepoSearchResponse {
   readonly search: {
     readonly pageInfo: {
@@ -37,5 +38,23 @@ export interface GitHubRepo {
         readonly totalCount: number;
       }
     }
+  }
+}
+
+//V4
+export interface GitHubStarrable {
+  readonly starrable: {
+    readonly viewerHasStarred: boolean;
+  }
+}
+export interface GithubAddStarResponse {
+  readonly addStar: GitHubStarrable;
+}
+export interface GithubRemoveStarResponse {
+  readonly removeStar: GitHubStarrable;
+}
+export interface GitHubStarMutationInput {
+  readonly input: {
+    readonly starrableId: string;
   }
 }

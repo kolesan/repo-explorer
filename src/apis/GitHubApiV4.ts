@@ -1,8 +1,8 @@
 import { GraphQLClient } from 'graphql-request';
 import token from '../../token';
 import log from '../utils/Logging';
-import { RepoSearchParams, RepoSearchResult, Repo } from '../types/RepoListTypes';
-import { GithubRepoSearchResponse, GitHubRepo } from '../types/GithubApiTypes';
+import { RepoSearchParams, RepoSearchResult, Repo, StarMutationResponse } from '../types/RepoListTypes';
+import { GithubRepoSearchResponse, GitHubRepo, GithubAddStarResponse, GithubRemoveStarResponse, GitHubStarMutationInput } from '../types/GithubApiTypes';
 const _get = require('lodash/get');
 
 const client = new GraphQLClient('https://api.github.com/graphql', {
@@ -11,7 +11,7 @@ const client = new GraphQLClient('https://api.github.com/graphql', {
   },
 })
 
-const getReposQuery = `
+const queryGetRepos = `
   query getRepos($searchQuery: String!, $startCursor: String, $count: Int!){
     search(query: $searchQuery, after: $startCursor, first: $count, type:REPOSITORY){
       pageInfo {
@@ -58,11 +58,11 @@ const getReposQuery = `
 `;
 
 export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
-  //Without this and 'updatedAt' field in the query the result order seems to be random and
-  //as a result cursor navigation impossible
+  //Without adding ' sort:updated' to search query and adding 'updatedAt' field to the graphql query
+  //the result order seems to be random and as a result cursor navigation becomes impossible
   const queryWithSort = searchQuery + " sort:updated";
-  const response: GithubRepoSearchResponse = await client.request(getReposQuery, { searchQuery: queryWithSort, startCursor, count });
-  // log(JSON.stringify(response, null, "  "));
+
+  const response: GithubRepoSearchResponse = await client.request(queryGetRepos, { searchQuery: queryWithSort, startCursor, count });
   const { search } = response;
   return {
     total: search.repositoryCount,
@@ -89,5 +89,50 @@ function toRepoObject(gitHubRepo: GitHubRepo): Repo {
     forkCount,
     issueCount: _get(issues, 'totalCount', null),
     commitCount: _get(defaultBranchRef, 'target.history.totalCount', null)
+  }
+}
+
+
+
+const mutationStar = `mutation star($input: AddStarInput!) {
+    addStar(input: $input) {
+      starrable {
+        viewerHasStarred
+      }
+    }
+  }
+`;
+
+export async function star(repoId: string): Promise<StarMutationResponse> {
+  const response: GithubAddStarResponse = await client.request(mutationStar, starMutationInput(repoId));
+  return {
+    starred: response.addStar.starrable.viewerHasStarred
+  }
+}
+
+
+
+const mutationUnstar = `mutation unstar($input: RemoveStarInput!) {
+  removeStar(input: $input) {
+    starrable {
+      viewerHasStarred
+    }
+  }
+}
+`;
+
+export async function unstar(repoId: string): Promise<StarMutationResponse> {
+  const response: GithubRemoveStarResponse = await client.request(mutationUnstar, starMutationInput(repoId));
+  return {
+    starred: response.removeStar.starrable.viewerHasStarred
+  }
+}
+
+
+function starMutationInput(repoId: string): GitHubStarMutationInput {
+  return {
+    input: {
+      starrableId: repoId
+    }
   }
 }

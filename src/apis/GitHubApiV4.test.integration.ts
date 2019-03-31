@@ -1,6 +1,8 @@
 import log from '../utils/Logging';
-import { repoSearch } from './GitHubApiV4';
+import { repoSearch, star, unstar } from './GitHubApiV4';
+import { StarMutationResponse } from '../types/RepoListTypes';
 
+jest.setTimeout(30000);
 
 describe('"repoSearch" returns a list of repositories from github api that match the provided query', () => {
 
@@ -88,6 +90,41 @@ describe('"repoSearch" returns a list of repositories from github api that match
       repos: []
     });
 
+  });
+
+});
+
+
+
+describe(`can star and unstar a repository by id`, () => {
+  
+  test(`using 'star' and 'unstar' methods`, async () => {
+    //Get id
+    let searchResponse = await repoSearch({
+      searchQuery: 'kolesan/react-ts-table',
+      count: 1
+    });
+    const repoId = searchResponse.repos[0].id;
+
+    //Star
+    const starResponse: StarMutationResponse = await star(repoId);
+    expect(starResponse.starred).toBe(true);
+    
+    searchResponse = await repoSearch({
+      searchQuery: 'kolesan/react-ts-table',
+      count: 1
+    });
+    expect(searchResponse.repos[0].starred).toBe(true);
+
+    //Unstar
+    const unstarResponse: StarMutationResponse = await unstar(repoId);
+    expect(unstarResponse.starred).toBe(false);
+    
+    searchResponse = await repoSearch({
+      searchQuery: 'kolesan/react-ts-table',
+      count: 1
+    });
+    expect(searchResponse.repos[0].starred).toBe(false);
   });
 
 });

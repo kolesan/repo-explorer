@@ -24,3 +24,8 @@ export interface Repo {
   readonly issueCount: number;
   readonly commitCount: number;
 }
+
+
+export interface StarMutationResponse {
+  readonly starred: boolean;
+}
