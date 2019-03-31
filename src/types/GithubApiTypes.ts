@@ -38,3 +38,9 @@ export interface GitHubRepo {
     }
   }
 }
+
+
+export interface GitHubRepoParticipation {
+  readonly all: number[];
+  readonly owner: number[];
+}
