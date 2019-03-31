@@ -12,7 +12,7 @@ test(`returns a list of repositories from github api that match the provided que
     nextPageCursor: expect.any(String),
     repos: [
       { 
-        id: "MDEwOlJlcG9zaXRvcnkxMDY5MTg1MzQ=",
+        id: expect.any(String),
         name: 'ts-react-json-table',
         owner: 'agracio',
         description: 'Simple React table component to display JSON data.',
@@ -26,7 +26,7 @@ test(`returns a list of repositories from github api that match the provided que
         commitCount: 46
       },
       {
-        id: "MDEwOlJlcG9zaXRvcnkxNzcwODE5MDg=",
+        id: expect.any(String),
         name: 'react-ts-table',
         owner: 'kolesan',
         description: 'Sortable table with react and typescript',
@@ -40,7 +40,7 @@ test(`returns a list of repositories from github api that match the provided que
         commitCount: 78
       },
       { 
-        id: "MDEwOlJlcG9zaXRvcnkxMDY5NjY4MDc=",
+        id: expect.any(String),
         name: 'react_table_ts',
         owner: 'tomo0613',
         description: null,
