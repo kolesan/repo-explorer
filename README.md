@@ -30,9 +30,13 @@ Launches the test runner in the interactive watch mode.
 Integration tests are special tests that interract with real world apis.<br>
 Integration test suite files end with `.test.integration.ts`
 
-`npm run integrationTests` - runs all integration tests.
+`npm run integrationTests` - runs all integration test suites.
 
-`npm run integrationTests -- --testPathPattern=RepoList` - runs integration tests that match the provided pattern (`RepoList` in this case).
+`npm run integrationTests -- --testPathPattern=RepoList` - runs integration test suites that match the provided pattern (`RepoList` in this case).
+
+`npm run integrationTests -- --testNamePattern=participation` - runs integration tests that match the provided pattern (describe or individual test name) (`participation` in this case).<br>
+Can be combined with `--testPathPattern`
+
 
 These tests have to be kept up to date since their asserts are susceptible to outside world changes.<br>
 If they fail unexpectedly, first check if the data they are working with has not changed.
