@@ -14,7 +14,7 @@ export default async function contributorCount(owner: string, name: string): Pro
   if (linkHeader) {
     const lastLink = linkHeader.last;
     const lastPageResponse = await axios.get(lastLink.url);
-    const contributorCountBeforeLastPage = (+lastLink.page - 1) * PER_PAGE
+    const contributorCountBeforeLastPage = (parseInt(lastLink.page) - 1) * PER_PAGE
     return contributorCountBeforeLastPage + lastPageResponse.data.length;
   }
 
