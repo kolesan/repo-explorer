@@ -1,6 +1,8 @@
 import { contributorCount, commitStats } from './GitHubApiV3';
 import log from '../utils/Logging';
 
+jest.setTimeout(30000);
+
 describe('"contributorCount" provides the number of contributors for a repo with', () => {
 
   test(`1 page of contributors (no link header)`, async () => {
