@@ -9,6 +9,7 @@ export interface GithubRepoSearchResponse {
 }
 
 export interface GitHubRepo {
+  readonly id: string;
   readonly name: string;
   readonly owner: {
     readonly login: string;

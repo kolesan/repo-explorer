@@ -20,6 +20,7 @@ const query = `
       repositoryCount
       nodes {
         ... on Repository {
+          id
           name
           owner {
             login
@@ -67,11 +68,12 @@ export default async function repoList({ searchQuery, startCursor, count }: Repo
 }
 
 function toRepoObject(gitHubRepo: GitHubRepo): Repo {
-  const { name, owner, description, licenseInfo, url,
+  const { id, name, owner, description, licenseInfo, url,
     viewerHasStarred, primaryLanguage, stargazers, forkCount, issues, defaultBranchRef
   } = gitHubRepo;
 
   return {
+    id,
     name: name,
     owner: _get(owner, 'login', null),
     description,
