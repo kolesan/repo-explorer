@@ -15,6 +15,7 @@ export interface GitHubRepo {
     readonly login: string;
   };
   readonly description: string;
+  readonly updatedAt: string;
   readonly licenseInfo: {
     readonly name: string;
   };

@@ -25,6 +25,7 @@ const getReposQuery = `
           owner {
             login
           }
+          updatedAt
           description
           licenseInfo {
             name
@@ -56,8 +57,11 @@ const getReposQuery = `
   }
 `;
 
-export default async function repoList({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
-  const response: GithubRepoSearchResponse = await client.request(getReposQuery, { searchQuery, startCursor, count });
+export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
+  //Without this and 'updatedAt' field in the query the result order seems to be random and
+  //as a result cursor navigation impossible
+  const queryWithSort = searchQuery + " sort:updated";
+  const response: GithubRepoSearchResponse = await client.request(getReposQuery, { searchQuery: queryWithSort, startCursor, count });
   // log(JSON.stringify(response, null, "  "));
   const { search } = response;
   return {
