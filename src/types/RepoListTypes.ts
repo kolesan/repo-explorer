@@ -7,7 +7,7 @@ export interface RepoSearchParams {
 export interface RepoSearchResult {
   readonly total: number;
   readonly repos: Repo[];
-  readonly nextPageCursor: string;
+  readonly nextPageCursor?: string;
 }
 
 export interface Repo {

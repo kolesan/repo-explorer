@@ -15,6 +15,7 @@ const queryGetRepos = `
   query getRepos($searchQuery: String!, $startCursor: String, $count: Int!){
     search(query: $searchQuery, after: $startCursor, first: $count, type:REPOSITORY){
       pageInfo {
+        hasNextPage
         endCursor
       }
       repositoryCount
@@ -67,7 +68,7 @@ export async function repoSearch({ searchQuery, startCursor, count }: RepoSearch
   return {
     total: search.repositoryCount,
     repos: search.nodes.map(toRepoObject),
-    nextPageCursor: search.pageInfo.endCursor,
+    nextPageCursor: search.pageInfo.hasNextPage ? search.pageInfo.endCursor : undefined
   }
 }
 

@@ -69,27 +69,17 @@ describe('"repoSearch" returns a list of repositories from github api that match
       startCursor: response1.nextPageCursor,
       count: 2 
     });
-    const response3 = await repoSearch({
-      searchQuery: 'react-ts-table',
-      startCursor: response2.nextPageCursor,
-      count: 2 
-    });
 
 
     expect(response1.total).toEqual(3);
+    expect(response1.nextPageCursor).toBeDefined();
     expect(response1.repos).toHaveLength(2);
 
     expect(response2.total).toEqual(3);
+    expect(response2.nextPageCursor).toBeUndefined();
     expect(response2.repos).toHaveLength(1);
 
     expect(response1.repos).not.toContainEqual(response2.repos[0]);
-
-    expect(response3).toEqual({
-      total: 3,
-      nextPageCursor: null,
-      repos: []
-    });
-
   });
 
 });

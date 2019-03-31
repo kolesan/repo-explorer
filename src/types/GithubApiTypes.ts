@@ -2,6 +2,7 @@
 export interface GithubRepoSearchResponse {
   readonly search: {
     readonly pageInfo: {
+      hasNextPage: boolean,
       endCursor: string;
     };
     readonly repositoryCount: number;
