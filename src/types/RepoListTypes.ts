@@ -12,6 +12,7 @@ export interface RepoSearchResult {
 
 export interface Repo {
   readonly name: string;
+  readonly owner: string;
   readonly description: string;
   readonly license: string;
   readonly url: string;

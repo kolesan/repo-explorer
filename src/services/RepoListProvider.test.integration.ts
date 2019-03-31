@@ -12,7 +12,8 @@ test(`returns a list of repositories from github api that match the provided que
     nextPageCursor: expect.any(String),
     repos: [
       { 
-        name: 'agracio/ts-react-json-table',
+        name: 'ts-react-json-table',
+        owner: 'agracio',
         description: 'Simple React table component to display JSON data.',
         license: 'MIT License',
         url: 'https://github.com/agracio/ts-react-json-table',
@@ -23,7 +24,8 @@ test(`returns a list of repositories from github api that match the provided que
         issueCount: 5
       },
       {
-        name: 'kolesan/react-ts-table',
+        name: 'react-ts-table',
+        owner: 'kolesan',
         description: 'Sortable table with react and typescript',
         license: null,
         url: 'https://github.com/kolesan/react-ts-table',
@@ -34,7 +36,8 @@ test(`returns a list of repositories from github api that match the provided que
         issueCount: 0 
       },
       { 
-        name: 'tomo0613/react_table_ts',
+        name: 'react_table_ts',
+        owner: 'tomo0613',
         description: null,
         license: null,
         url: 'https://github.com/tomo0613/react_table_ts',

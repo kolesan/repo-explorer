@@ -19,7 +19,10 @@ const query = `
       repositoryCount
       nodes {
         ... on Repository {
-          nameWithOwner
+          name
+          owner {
+            login
+          }
           description
           licenseInfo {
             name
@@ -54,12 +57,13 @@ export default async function repoList({ searchQuery, startCursor, count }: Repo
 }
 
 function toRepoObject(gitHubRepo: GitHubRepo): Repo {
-  const { nameWithOwner, description, licenseInfo, url,
+  const { name, owner, description, licenseInfo, url,
     viewerHasStarred, primaryLanguage, stargazers, forkCount, issues 
   } = gitHubRepo;
 
   return {
-    name: nameWithOwner,
+    name: name,
+    owner: owner && owner.login,
     description,
     license: licenseInfo && licenseInfo.name,
     url,
