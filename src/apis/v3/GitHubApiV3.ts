@@ -1,6 +1,6 @@
 import axios from 'axios';
 import parseLinkHeader from 'parse-link-header';
-import token from '../../token';
+import token from '../../../token';
 
 const PER_PAGE = 30;
 

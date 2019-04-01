@@ -1,5 +1,5 @@
 import { contributorCount, commitStats } from './GitHubApiV3';
-import log from '../utils/Logging';
+import log from '../../utils/Logging';
 
 jest.setTimeout(30000);
 

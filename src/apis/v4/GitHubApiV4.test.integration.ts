@@ -1,6 +1,6 @@
-import log from '../utils/Logging';
+import log from '../../utils/Logging';
 import { repoSearch, star, unstar } from './GitHubApiV4';
-import { StarMutationResponse } from '../types/RepoListTypes';
+import { StarMutationResponse } from '../../types/RepoListTypes';
 
 jest.setTimeout(30000);
 
