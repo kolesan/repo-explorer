@@ -10,8 +10,8 @@ const _get = require('lodash/get');
 
 const client = new GraphQLClient('https://api.github.com/graphql', {
   headers: {
-    authorization: `token ${token}`,
-  },
+    authorization: `token ${token}`
+  }
 })
 
 export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
