@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import log from '../utils/Logging';
 
 interface AnimatedLoadingIndicatorProps {
   readonly duration: number;
@@ -7,7 +8,8 @@ interface AnimatedLoadingIndicatorState {}
 
 const constantStyles = {
   background: "linear-gradient(to right, #CCCCCC, #CCCCCC) white",
-  backgroundRepeat: "no-repeat"
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "0"
 }
 
 class AnimatedLoadingIndicator extends Component<AnimatedLoadingIndicatorProps, AnimatedLoadingIndicatorState> {
@@ -20,14 +22,27 @@ class AnimatedLoadingIndicator extends Component<AnimatedLoadingIndicatorProps, 
     this.ref = React.createRef();
   }
 
+  onAnimationFinish() {
+    this.ref.current.style.backgroundSize = "100%"
+  }
+
   componentDidMount() {
-    this.ref.current.animate(
+    let animation = this.ref.current.animate(
       [
         { backgroundSize: "0" },
+        { backgroundSize: "13%", offset: 0.3 },
+        { backgroundSize: "34%" },
+        { backgroundSize: "51%" },
+        { backgroundSize: "75%" },
         { backgroundSize: "100%" }
       ],
-      { duration: this.props.duration }
+      {
+        delay: 150,
+        easing: "ease-in",
+        duration: this.props.duration
+      }
     );
+    animation.onfinish = this.onAnimationFinish.bind(this);
   }
 
   render() { 
