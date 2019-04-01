@@ -4,6 +4,7 @@ import log from "../utils/Logging";
 import { repoSearch } from "../apis/v4/GitHubApiV4";
 import InfiniteLoader, { InfiniteLoaderProps, RendererCallback } from "react-window-infinite-loader";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
+import AnimatedLoadingIndicator from "./AnimatedLoadingIndicator";
 
 interface SearchResultsProps {
   readonly searchQuery: string;
@@ -62,6 +63,10 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
   }
 
   render() {
+    if (this.state.loadedRepos.length == 0) {
+      return <AnimatedLoadingIndicator duration={2000}/>;
+    }
+    
     const { total, nextPageCursor } = this.state.searchResults;
     const { loadedRepos } = this.state;
 
