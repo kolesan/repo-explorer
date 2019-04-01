@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
-import token from '../../../token';
+import token from '../../token';
 import log from '../../utils/Logging';
 import { RepoSearchParams, RepoSearchResult, Repo, StarMutationResponse } from '../../types/RepoListTypes';
 import { GithubRepoSearchResponse, GitHubRepo, GithubAddStarResponse, GithubRemoveStarResponse, GitHubStarMutationInput } from '../../types/GithubApiTypes';
