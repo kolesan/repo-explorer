@@ -40,7 +40,7 @@ class AnimatedLoadingIndicator extends Component<AnimatedLoadingIndicatorProps, 
         { backgroundSize: "100%" }
       ],
       {
-        delay: 150,
+        delay: 50,
         easing: "ease-in",
         duration: this.props.duration
       }
