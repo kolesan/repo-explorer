@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import log from '../utils/Logging';
 
-interface SpinnerProps {}
+interface SpinnerProps {
+  readonly style?: React.CSSProperties;
+}
 interface SpinnerState {}
 
 const styles = {
@@ -31,7 +33,7 @@ class Spinner extends Component<SpinnerProps, SpinnerState> {
   }
 
   render() { 
-    return <img ref={this.ref} style={styles} src="resources/spinner.png" />;
+    return <img ref={this.ref} style={{...styles, ...this.props.style}} src="resources/spinner.png" />;
   }
   
 }
