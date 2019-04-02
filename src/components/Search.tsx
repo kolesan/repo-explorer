@@ -14,6 +14,7 @@ interface SearchState {
   readonly searchResults: RepoSearchResult;
   readonly loadedRepos: Repo[];
   readonly itemLoadedState: boolean[];
+  readonly contributorCounts: number[];
   readonly state: State;
 }
 const LOAD_COUNT = 10;
@@ -34,6 +35,7 @@ class Search extends Component<SearchProps, SearchState> {
       },
       loadedRepos: [],
       itemLoadedState: [],
+      contributorCounts: []
     };
     this.onSearchQueryChanged = _debounce(this.onSearchQueryChanged, 400, { trailing: true });
   }
@@ -51,6 +53,7 @@ class Search extends Component<SearchProps, SearchState> {
       this.setState({
         loadedRepos: [],
         itemLoadedState: [],
+        contributorCounts: [],
         state: State.LOADING
       })
       this.search(newQuery);
@@ -60,13 +63,11 @@ class Search extends Component<SearchProps, SearchState> {
   async search(searchQuery: string, startCursor?: string) {
     log(`Searching: ${searchQuery}. Cursor: ${startCursor}`);
     const results = await repoSearch({ searchQuery, startCursor, count: LOAD_COUNT });
-    log(`Found: ${results.total} ${searchQuery} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name} c:${repo.contributorCount}`), null, "")} ${results.nextPageCursor}`);
+    log(`Found: ${results.total} ${searchQuery} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name}`), null, "")} ${results.nextPageCursor}`);
 
-    let newRepos = await this.withContributorCounts(results.repos);
+    this.requestContributorCounts(this.state.loadedRepos.length, results.repos);
 
-    log(`With contributors: ${JSON.stringify(newRepos.map(repo=>`${repo.owner}/${repo.name} c:${repo.contributorCount}`), null, "")}`);
-
-    let loadedRepos = [ ...this.state.loadedRepos, ...newRepos];
+    let loadedRepos = [ ...this.state.loadedRepos, ...results.repos ];
 
     let itemLoadedState = [ ...new Array(results.total)].map(it => false);
     for(let i = 0; i < loadedRepos.length; i++) {
@@ -81,12 +82,15 @@ class Search extends Component<SearchProps, SearchState> {
     });
   }
 
-  withContributorCounts(repos: Repo[]): Promise<Repo[]> {
-    return Promise.all(
-      repos.map(async repo => 
-        ( { ...repo, contributorCount: await contributorCount(repo.owner, repo.name)} )
-      )
-    );
+  requestContributorCounts(startingIndex: number, repos: Repo[]) {
+    repos.forEach(async (repo, i) => {
+      let count = await contributorCount(repo.owner, repo.name);
+      let contributorCounts = [...this.state.contributorCounts];
+      contributorCounts[startingIndex + i] = count;
+      this.setState({
+        contributorCounts
+      })
+    })
   }
 
   render() {
@@ -96,7 +100,7 @@ class Search extends Component<SearchProps, SearchState> {
       case State.LOADING:
         return <Spinner/>;
       case State.LOADED:
-        const { searchResults, loadedRepos, itemLoadedState } = this.state;
+        const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.state;
         const { total, nextPageCursor } = searchResults;
         const { searchQuery } = this.props;
 
@@ -104,7 +108,8 @@ class Search extends Component<SearchProps, SearchState> {
           loadMoreItems: () => this.search(searchQuery, nextPageCursor),
           total,
           loadedRepos,
-          itemLoadedState
+          itemLoadedState,
+          contributorCounts
         }
         log("State changed to loaded - showing results");
         return <SearchResults {...resultListProps}></SearchResults>;

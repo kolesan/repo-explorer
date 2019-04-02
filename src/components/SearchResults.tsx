@@ -10,6 +10,7 @@ interface SearchProps {
   readonly total: number;
   readonly loadedRepos: Repo[];
   readonly itemLoadedState: boolean[];
+  readonly contributorCounts: number[];
 }
 
 export default function SearchResults(props: SearchProps) {
@@ -46,10 +47,11 @@ export default function SearchResults(props: SearchProps) {
   
   function renderListItem({ data, index, style }: ListChildComponentProps) {
     const repo = data[index];
+    const contributorCount = props.contributorCounts[index];
     if (!repo) {
       return <div style={style}>LOADING</div>;
     }
-    return <SearchResultsItem repo={repo} style={style} />
+    return <SearchResultsItem repo={repo} style={style} contributorCount={contributorCount}/>
   }
 
 }

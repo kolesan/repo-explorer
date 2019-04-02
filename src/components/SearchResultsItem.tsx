@@ -1,5 +1,6 @@
 import React from "react";
 import { Repo } from "../types/RepoListTypes";
+import Spinner from "./Spinner";
 
 interface SearchResultsItemProps { 
   readonly repo: Repo;
@@ -8,8 +9,8 @@ interface SearchResultsItemProps {
 }
 
 export default function SearchResultsItem(props: SearchResultsItemProps) {
-  const { repo, style } = props;
-  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount, contributorCount }: Repo = repo;
+  const { repo, style, contributorCount } = props;
+  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount }: Repo = repo;
 
   return (
     <div style={style}>
@@ -22,7 +23,9 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
       <div>{starCount}</div>
       <div>{forkCount}</div>
       <div>{issueCount}</div>
-      <div>{contributorCount !== undefined ? contributorCount : "unknown"}</div>
+      { contributorCount !== undefined ?
+         <div>{contributorCount}</div> :
+         <Spinner style={{width: "1rem"}}/> }
     </div>
   );
 }
