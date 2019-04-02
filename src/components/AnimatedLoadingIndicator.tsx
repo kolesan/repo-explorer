@@ -23,7 +23,10 @@ class AnimatedLoadingIndicator extends Component<AnimatedLoadingIndicatorProps, 
   }
 
   onAnimationFinish() {
-    this.ref.current.style.backgroundSize = "100%"
+    let bar = this.ref.current;
+    if (bar) {
+      bar.style.backgroundSize = "100%";
+    }
   }
 
   componentDidMount() {
