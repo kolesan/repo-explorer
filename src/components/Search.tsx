@@ -68,11 +68,7 @@ class Search extends Component<SearchProps, SearchState> {
     this.requestContributorCounts(this.state.loadedRepos.length, results.repos);
 
     let loadedRepos = [ ...this.state.loadedRepos, ...results.repos ];
-
-    let itemLoadedState = [ ...new Array(results.total)].map(it => false);
-    for(let i = 0; i < loadedRepos.length; i++) {
-      itemLoadedState[i] = true;
-    }
+    let itemLoadedState = [ ...new Array(loadedRepos.length)].map(it => true);
 
     this.setState({
       searchResults: results,
