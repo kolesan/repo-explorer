@@ -25,12 +25,12 @@ describe('"contributorCount" provides the number of contributors for a repo with
 describe('"commitStats" provides last year participation statistics for a repo', () => {
 
   test(`returns a 52 elements long number array`, async () => {
-    const participation = await commitStats("kolesan", "repo-explorer");
+    const participation = await commitStats("kolesan", "react-ts-table");
     // log(participation);
 
     expect(participation).toHaveLength(52);
     expect(participation).toEqual([
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 34, 44
     ]);
   });
 

@@ -8,12 +8,13 @@ describe('"repoSearch" returns a list of repositories from github api that match
 
   test(`single request`, async () => {
     const response = await repoSearch({
-      searchQuery: 'react-ts-table',
+      searchQuery: 'react-ts-table sort:updated',
       count: 10 
     });
 
     expect(response.total).toEqual(3);
-    expect(response.repos).toEqual([
+    expect(response.repos).toHaveLength(3);
+    expect(response.repos).toContainEqual(
       {
         id: expect.any(String),
         name: 'react-ts-table',
@@ -27,7 +28,9 @@ describe('"repoSearch" returns a list of repositories from github api that match
         forkCount: 0,
         issueCount: 0,
         commitCount: 78
-      },
+      }
+    );
+    expect(response.repos).toContainEqual(
       {
         id: expect.any(String),
         name: 'ts-react-json-table',
@@ -41,7 +44,9 @@ describe('"repoSearch" returns a list of repositories from github api that match
         forkCount: 4,
         issueCount: 5,
         commitCount: 46
-      },
+      }
+    );
+    expect(response.repos).toContainEqual(
       {
         id: expect.any(String),
         name: 'react_table_ts',
@@ -56,16 +61,16 @@ describe('"repoSearch" returns a list of repositories from github api that match
         issueCount: 0,
         commitCount: 2
       }
-    ]);
+    );
   });
 
   test(`multiple requests using page cursors`, async () => {
     const response1 = await repoSearch({
-      searchQuery: 'react-ts-table',
+      searchQuery: 'react-ts-table sort:updated',
       count: 2 
     });
     const response2 = await repoSearch({
-      searchQuery: 'react-ts-table',
+      searchQuery: 'react-ts-table sort:updated',
       startCursor: response1.nextPageCursor,
       count: 2 
     });
