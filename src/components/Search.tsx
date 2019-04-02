@@ -15,12 +15,12 @@ interface SearchState {
   readonly loadedRepos: Repo[];
   readonly itemLoadedState: boolean[];
   readonly contributorCounts: number[];
-  readonly state: State;
+  readonly status: Status;
 }
 const LOAD_COUNT = 10;
 const MINIMUM_SYMBOLS_BEFORE_SEARCHING = 2;
 
-enum State {
+enum Status {
   REST, LOADING, LOADED
 }
 
@@ -28,7 +28,7 @@ class Search extends Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props);
     this.state = {
-      state: State.REST,
+      status: Status.REST,
       searchResults: {
         total: 0,
         repos: []
@@ -54,7 +54,7 @@ class Search extends Component<SearchProps, SearchState> {
         loadedRepos: [],
         itemLoadedState: [],
         contributorCounts: [],
-        state: State.LOADING
+        status: Status.LOADING
       })
       this.search(newQuery);
     }
@@ -74,7 +74,7 @@ class Search extends Component<SearchProps, SearchState> {
       searchResults: results,
       loadedRepos,
       itemLoadedState,
-      state: State.LOADED
+      status: Status.LOADED
     });
   }
 
@@ -90,12 +90,12 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   render() {
-    switch(this.state.state) {
-      case State.REST:
+    switch(this.state.status) {
+      case Status.REST:
         return null;
-      case State.LOADING:
+      case Status.LOADING:
         return <Spinner/>;
-      case State.LOADED:
+      case Status.LOADED:
         const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.state;
         const { total, nextPageCursor } = searchResults;
         const { searchQuery } = this.props;
@@ -107,7 +107,6 @@ class Search extends Component<SearchProps, SearchState> {
           itemLoadedState,
           contributorCounts
         }
-        log("State changed to loaded - showing results");
         return <SearchResults {...resultListProps}></SearchResults>;
     }
   }
