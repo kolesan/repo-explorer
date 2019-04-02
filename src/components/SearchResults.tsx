@@ -27,22 +27,24 @@ export default function SearchResults(props: SearchProps) {
     height: 750,
     itemCount: total,
     itemSize: 250,
-    width: "75%",
+    width: "75%"
   }
   
   return (
     <InfiniteLoader {...loaderProps}>
-      {
-        ({ onItemsRendered, ref }: RendererCallback) => (
-          <FixedSizeList {...listProps} onItemsRendered={onItemsRendered} ref={ref}>
-            {renderRepoListItem}
-          </FixedSizeList>
-        )
-      }
+      {renderList}
     </InfiniteLoader>
   );
   
-  function renderRepoListItem({ data, index, style }: ListChildComponentProps) {
+  function renderList({ onItemsRendered, ref }: RendererCallback) {
+    return (
+      <FixedSizeList {...listProps} onItemsRendered={onItemsRendered} ref={ref}>
+        {renderListItem}
+      </FixedSizeList>
+    );
+  }
+  
+  function renderListItem({ data, index, style }: ListChildComponentProps) {
     const repo = data[index];
     if (!repo) {
       return <div style={style}>LOADING</div>;
