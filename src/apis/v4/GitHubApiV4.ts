@@ -15,11 +15,6 @@ const client = new GraphQLClient('https://api.github.com/graphql', {
 })
 
 export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
-  //Without adding ' sort:updated' to search query and adding 'updatedAt' field to the graphql query
-  //the result order seems to be random and as a result cursor navigation becomes impossible
-  // const queryWithSort = searchQuery + " sort:updated";
-  // const response: GithubRepoSearchResponse = await client.request(getRepositoriesQuery, { searchQuery: queryWithSort, startCursor, count });
-
   const response: GithubRepoSearchResponse = await client.request(getRepositoriesQuery, { searchQuery, startCursor, count });
   const { search } = response;
   return {
