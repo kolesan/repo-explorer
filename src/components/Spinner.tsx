@@ -33,7 +33,7 @@ class Spinner extends Component<SpinnerProps, SpinnerState> {
   }
 
   render() { 
-    return <img ref={this.ref} style={{...styles, ...this.props.style}} src="resources/spinner.png" />;
+    return <img ref={this.ref} style={{...styles, ...this.props.style}} src="resources/images/spinner.png" />;
   }
   
 }
