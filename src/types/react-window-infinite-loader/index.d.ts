@@ -5,13 +5,16 @@ declare module 'react-window-infinite-loader' {
   export interface InfiniteLoaderProps {
     readonly isItemLoaded: (index: number) => boolean;
     readonly itemCount: number;
-    readonly loadMoreItems: (startIndex: number, stopIndex: number) => Promise<void>;
-    readonly minimumBatchSize: number;
+    readonly loadMoreItems: LoadMoreItemsFunction;
+    readonly minimumBatchSize?: number;
     readonly threshold?: number;
   }
-  
+
+  export type LoadMoreItemsFunction = (startIndex: number, stopIndex: number) => Promise<void>;
+  export type OnItemsRenderedFunction = (props: ListOnItemsRenderedProps) => any;
+
   export interface RendererCallback {
-    readonly onItemsRendered: Function;
+    readonly onItemsRendered: OnItemsRenderedFunction;
     readonly ref: Ref;
   }
   

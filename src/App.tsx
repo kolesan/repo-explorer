@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import log from './utils/Logging';
-import SearchResults from './components/SearchResults';
+import Search from './components/Search';
 
 interface AppState {
   readonly searchQuery: string;
@@ -28,7 +28,7 @@ class App extends Component<AppProps, AppState> {
     return (
       <div>
         <input placeholder="&#x1f50e; Search" value={searchQuery} onChange={this.queryChange}></input>
-        <SearchResults searchQuery={searchQuery}/>
+        <Search searchQuery={searchQuery}/>
       </div>
     );
   }
