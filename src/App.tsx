@@ -12,11 +12,25 @@ class App extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      searchQuery: 'react sort:stars'
+      searchQuery: ''
     };
+    this.queryChange = this.queryChange.bind(this);
   }
+
+  queryChange(event: any) {
+    this.setState({
+      searchQuery: event.target.value
+    });
+  }
+
   render() {
-    return <SearchResults searchQuery={this.state.searchQuery}/>;
+    const { searchQuery } = this.state;
+    return (
+      <div>
+        <input placeholder="&#x1f50e; Search" value={searchQuery} onChange={this.queryChange}></input>
+        <SearchResults searchQuery={searchQuery}/>
+      </div>
+    );
   }
 }
 

@@ -5,21 +5,29 @@ import { repoSearch } from "../apis/v4/GitHubApiV4";
 import InfiniteLoader, { InfiniteLoaderProps, RendererCallback } from "react-window-infinite-loader";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import AnimatedLoadingIndicator from "./AnimatedLoadingIndicator";
+import _debounce from 'lodash/debounce'
 
 interface SearchResultsProps {
   readonly searchQuery: string;
 }
 interface SearchResultsState {
   readonly searchResults: RepoSearchResult;
-  loadedRepos: Repo[];
-  itemLoadedState: boolean[];
+  readonly loadedRepos: Repo[];
+  readonly itemLoadedState: boolean[];
+  readonly state: State;
 }
 const LOAD_COUNT = 10;
+const MINIMUM_SYMBOLS_BEFORE_SEARCHING = 2;
+
+enum State {
+  REST, LOADING, LOADED
+}
 
 class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
   constructor(props: SearchResultsProps) {
     super(props);
     this.state = {
+      state: State.REST,
       searchResults: {
         total: 0,
         repos: []
@@ -27,26 +35,32 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
       loadedRepos: [],
       itemLoadedState: [],
     };
+    this.onSearchQueryChanged = _debounce(this.onSearchQueryChanged, 400, { trailing: true });
   }
 
   async componentDidUpdate(prevProps: SearchResultsProps) {
-    if (prevProps.searchQuery != this.props.searchQuery) {
+    const newQuery = this.props.searchQuery;
+    if (newQuery != prevProps.searchQuery) {
+      this.onSearchQueryChanged(newQuery);
+    }
+  }
+
+  onSearchQueryChanged(newQuery: string) {
+    log("Search query changed:", newQuery);
+    if (newQuery.length > MINIMUM_SYMBOLS_BEFORE_SEARCHING) {
       this.setState({
         loadedRepos: [],
         itemLoadedState: [],
+        state: State.LOADING
       })
-      this.search(this.props.searchQuery);
+      this.search(newQuery);
     }
-  }
-  
-  async componentDidMount() {
-    this.search(this.props.searchQuery);
   }
 
   async search(searchQuery: string, startCursor?: string) {
     log(`Searching: ${searchQuery}. Cursor: ${startCursor}`);
     const results = await repoSearch({ searchQuery, startCursor, count: LOAD_COUNT });
-    log(`Found: ${results.total} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name}`), null, "")} ${results.nextPageCursor}`);
+    log(`Found: ${results.total} ${searchQuery} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name}`), null, "")} ${results.nextPageCursor}`);
 
     let loadedRepos = [ ...this.state.loadedRepos, ...results.repos];
 
@@ -57,32 +71,38 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
 
     this.setState({
       searchResults: results,
+      loadedRepos,
       itemLoadedState,
-      loadedRepos
+      state: State.LOADED
     });
   }
 
   render() {
-    if (this.state.loadedRepos.length == 0) {
-      return <AnimatedLoadingIndicator duration={2000}/>;
+    switch(this.state.state) {
+      case State.REST:
+        return null;
+      case State.LOADING:
+        return <AnimatedLoadingIndicator duration={2000}/>;
+      case State.LOADED:
+        const { total, nextPageCursor } = this.state.searchResults;
+        const { loadedRepos, itemLoadedState } = this.state;
+        const { searchQuery } = this.props;
+    
+        const loaderProps: InfiniteLoaderProps = {
+          isItemLoaded: index => itemLoadedState[index],
+          itemCount: total,
+          minimumBatchSize: LOAD_COUNT,
+          loadMoreItems: (start, stop) => this.search(searchQuery, nextPageCursor)
+        };
+        
+        return (
+          <InfiniteLoader {...loaderProps}>
+            {({ onItemsRendered, ref }: RendererCallback) => renderList(onItemsRendered, ref, loadedRepos, total)}
+          </InfiniteLoader>
+        );
     }
-    
-    const { total, nextPageCursor } = this.state.searchResults;
-    const { loadedRepos } = this.state;
-
-    const loaderProps: InfiniteLoaderProps = {
-      isItemLoaded: index => this.state.itemLoadedState[index],
-      itemCount: total,
-      minimumBatchSize: LOAD_COUNT,
-      loadMoreItems: (start, stop) => this.search(this.props.searchQuery, nextPageCursor)
-    };
-    
-    return (
-      <InfiniteLoader {...loaderProps}>
-        {({ onItemsRendered, ref }: RendererCallback) => renderList(onItemsRendered, ref, loadedRepos, total)}
-      </InfiniteLoader>
-    );
   }
+
 }
 
 function renderList(onItemsRendered: any, ref: any, repos: Repo[], total: number) {
@@ -91,7 +111,7 @@ function renderList(onItemsRendered: any, ref: any, repos: Repo[], total: number
     height: 750,
     itemCount: total,
     itemSize: 150,
-    width: 650,
+    width: "75%",
     onItemsRendered,
     ref: ref
   }
