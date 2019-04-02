@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { RepoSearchResult, Repo } from "../types/RepoListTypes";
-import log from "../utils/Logging";
 import { repoSearch } from "../apis/v4/GitHubApiV4";
+import { contributorCount } from "../apis/v3/GitHubApiV3";
 import Spinner from "./Spinner";
-import _debounce from 'lodash/debounce'
 import SearchResults from "./SearchResults";
+import _debounce from 'lodash/debounce'
+import log from "../utils/Logging";
 
 interface SearchProps {
   readonly searchQuery: string;
@@ -59,9 +60,13 @@ class Search extends Component<SearchProps, SearchState> {
   async search(searchQuery: string, startCursor?: string) {
     log(`Searching: ${searchQuery}. Cursor: ${startCursor}`);
     const results = await repoSearch({ searchQuery, startCursor, count: LOAD_COUNT });
-    log(`Found: ${results.total} ${searchQuery} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name}`), null, "")} ${results.nextPageCursor}`);
+    log(`Found: ${results.total} ${searchQuery} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name} c:${repo.contributorCount}`), null, "")} ${results.nextPageCursor}`);
 
-    let loadedRepos = [ ...this.state.loadedRepos, ...results.repos];
+    let newRepos = await this.withContributorCounts(results.repos);
+
+    log(`With contributors: ${JSON.stringify(newRepos.map(repo=>`${repo.owner}/${repo.name} c:${repo.contributorCount}`), null, "")}`);
+
+    let loadedRepos = [ ...this.state.loadedRepos, ...newRepos];
 
     let itemLoadedState = [ ...new Array(results.total)].map(it => false);
     for(let i = 0; i < loadedRepos.length; i++) {
@@ -74,6 +79,14 @@ class Search extends Component<SearchProps, SearchState> {
       itemLoadedState,
       state: State.LOADED
     });
+  }
+
+  withContributorCounts(repos: Repo[]): Promise<Repo[]> {
+    return Promise.all(
+      repos.map(async repo => 
+        ( { ...repo, contributorCount: await contributorCount(repo.owner, repo.name)} )
+      )
+    );
   }
 
   render() {
@@ -93,7 +106,7 @@ class Search extends Component<SearchProps, SearchState> {
           loadedRepos,
           itemLoadedState
         }
-        
+        log("State changed to loaded - showing results");
         return <SearchResults {...resultListProps}></SearchResults>;
     }
   }

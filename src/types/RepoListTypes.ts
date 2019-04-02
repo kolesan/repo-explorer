@@ -23,6 +23,7 @@ export interface Repo {
   readonly forkCount: number;
   readonly issueCount: number;
   readonly commitCount: number;
+  readonly contributorCount?: number;
 }
 
 

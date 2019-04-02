@@ -4,11 +4,12 @@ import { Repo } from "../types/RepoListTypes";
 interface SearchResultsItemProps { 
   readonly repo: Repo;
   readonly style: React.CSSProperties
+  readonly contributorCount?: number;
 }
 
 export default function SearchResultsItem(props: SearchResultsItemProps) {
   const { repo, style } = props;
-  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount }: Repo = repo;
+  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount, contributorCount }: Repo = repo;
 
   return (
     <div style={style}>
@@ -21,6 +22,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
       <div>{starCount}</div>
       <div>{forkCount}</div>
       <div>{issueCount}</div>
+      <div>{contributorCount !== undefined ? contributorCount : "unknown"}</div>
     </div>
   );
 }
