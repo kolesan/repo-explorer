@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { RepoSearchResult, Repo } from "../types/RepoListTypes";
 import log from "../utils/Logging";
 import { repoSearch } from "../apis/v4/GitHubApiV4";
-import AnimatedLoadingIndicator from "./AnimatedLoadingIndicator";
+import Spinner from "./Spinner";
 import _debounce from 'lodash/debounce'
 import SearchResults from "./SearchResults";
 
@@ -81,7 +81,7 @@ class Search extends Component<SearchProps, SearchState> {
       case State.REST:
         return null;
       case State.LOADING:
-        return <AnimatedLoadingIndicator duration={2000}/>;
+        return <Spinner/>;
       case State.LOADED:
         const { searchResults, loadedRepos, itemLoadedState } = this.state;
         const { total, nextPageCursor } = searchResults;
