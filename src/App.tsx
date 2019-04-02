@@ -27,7 +27,7 @@ class App extends Component<AppProps, AppState> {
     const { searchQuery } = this.state;
     return (
       <div>
-        <input placeholder="&#x1f50e; Search" value={searchQuery} onChange={this.queryChange}></input>
+        <input className="searchInput" placeholder="&#x1f50e; Search" value={searchQuery} onChange={this.queryChange}></input>
         <Search searchQuery={searchQuery}/>
       </div>
     );
