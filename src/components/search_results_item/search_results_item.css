@@ -63,6 +63,14 @@
   margin: 0 0.3rem 0.2rem 0;
 }
 
+.issue_count {
+  display: flex;
+  align-items: flex-end;
+}
+.issue_count_image {
+  height: 1.7rem;
+}
+
 .search_results_item_panel__body {
   margin: 0.5rem;
   display: flex;
