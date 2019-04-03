@@ -38,10 +38,19 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
           <Forks count={forkCount} />
           <div>{issueCount}</div>
           { contributorCount !== undefined ?
-            <div>{contributorCount}</div> :
+            <Contributors count={contributorCount} /> :
             <Spinner style={{width: "1rem"}}/> }
         </div>
       </div>
+    </div>
+  );
+}
+
+function Contributors(props: any) {
+  return (
+    <div className="contirbutor_count">
+      <img className="contirbutor_count_image" src="resources/images/contributors.png" />
+      {props.count}
     </div>
   );
 }
