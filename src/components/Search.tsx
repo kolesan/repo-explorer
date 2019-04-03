@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { RepoSearchResult, Repo } from "../types/RepoListTypes";
+import { RepoSearchResult, Repo, ContributorsWithIndex } from "../types/RepoListTypes";
 import { repoSearch } from "../apis/v4/GitHubApiV4";
 import { contributorCount } from "../apis/v3/GitHubApiV3";
 import Spinner from "./Spinner";
 import SearchResults from "./SearchResults";
 import _debounce from 'lodash/debounce';
 import log from "../utils/Logging";
-import { onlyLast, sequential } from "../utils/PromiseUtils";
+import { onlyLast, sequential, all } from "../utils/PromiseUtils";
 
 interface SearchProps {
   readonly searchQuery: string;
@@ -43,12 +43,11 @@ class Search extends Component<SearchProps, SearchState> {
     };
 
     this.onSearchQueryChanged = _debounce(this.onSearchQueryChanged, 400, { trailing: true });
-    this.onReposReceived = this.onReposReceived.bind(this);
     this.enqueMoreResultsRequest = this.enqueMoreResultsRequest.bind(this);
-    this.putToSequence = this.putToSequence.bind(this);
+    this.displayContributorCount = this.displayContributorCount.bind(this);
 
-    this.onlyLastPromise = onlyLast(this.putToSequence);
-    this.toPromiseSequence = sequential(this.onReposReceived);
+    this.onlyLastPromise = onlyLast(this.putToSequence.bind(this));
+    this.toPromiseSequence = sequential(this.onReposReceived.bind(this));
   }
 
   putToSequence(searchResult: RepoSearchResult) {
@@ -83,7 +82,9 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   onReposReceived(results: RepoSearchResult) {
-    this.requestContributorCounts(this.state.loadedRepos.length, results.repos);
+    let contributCountRequests = this.requestContributorCounts(this.state.loadedRepos.length, results.repos)
+    all(...contributCountRequests)
+      .then(this.displayContributorCount);
 
     let loadedRepos = [ ...this.state.loadedRepos, ...results.repos ];
     let itemLoadedState = [ ...new Array(loadedRepos.length)].map(it => true);
@@ -96,15 +97,29 @@ class Search extends Component<SearchProps, SearchState> {
     });
   }
 
-  requestContributorCounts(startingIndex: number, repos: Repo[]) {
-    repos.forEach(async (repo, i) => {
-      let count = await contributorCount(repo.owner, repo.name);
-      let contributorCounts = [...this.state.contributorCounts];
-      contributorCounts[startingIndex + i] = count;
-      this.setState({
-        contributorCounts
-      })
+  requestContributorCounts(startingIndex: any, repos: Repo[]): Promise<ContributorsWithIndex>[] {
+    let requests: Promise<ContributorsWithIndex>[] = [];
+    repos.forEach((repo, i) => {
+      requests.push(new Promise(resolve => {
+        contributorCount(repo.owner, repo.name)
+          .then(contributorCount => {
+            resolve({
+              contributorCount,
+              index: startingIndex + i
+            })
+          })
+      }));
     })
+    return requests;
+  }
+
+  displayContributorCount(countResult: ContributorsWithIndex) {
+    let { contributorCount, index } = countResult;
+
+    let contributorCounts = [...this.state.contributorCounts];
+    contributorCounts[index] = contributorCount;
+    
+    this.setState({contributorCounts})
   }
 
   enqueMoreResultsRequest() {

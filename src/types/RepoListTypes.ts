@@ -25,6 +25,11 @@ export interface Repo {
   readonly commitCount: number;
 }
 
+export interface ContributorsWithIndex {
+  readonly contributorCount: number;
+  readonly index: number;
+}
+
 
 export interface StarMutationResponse {
   readonly starred: boolean;
