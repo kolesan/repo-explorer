@@ -6,7 +6,7 @@ import Spinner from "./Spinner";
 import SearchResults from "./SearchResults";
 import _debounce from 'lodash/debounce';
 import log from "../utils/Logging";
-import { onlyLast, sequential, all } from "../utils/PromiseUtils";
+import { onlyLast, sequential, every } from "../utils/PromiseUtils";
 
 interface SearchProps {
   readonly searchQuery: string;
@@ -83,7 +83,7 @@ class Search extends Component<SearchProps, SearchState> {
 
   onReposReceived(results: RepoSearchResult) {
     let contributCountRequests = this.requestContributorCounts(this.state.loadedRepos.length, results.repos)
-    all(...contributCountRequests)
+    every(...contributCountRequests)
       .then(this.displayContributorCount);
 
     let loadedRepos = [ ...this.state.loadedRepos, ...results.repos ];

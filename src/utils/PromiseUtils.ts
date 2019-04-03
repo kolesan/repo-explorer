@@ -36,7 +36,7 @@ export function sequential(then: (val: any) => void) {
 }
 
 
-export function all(...promises: Promise<any>[]) {
+export function every(...promises: Promise<any>[]) {
   return {
     then(fn: (v: any) => void) {
       return Promise.all(promises.map(promise => promise.then(fn)));

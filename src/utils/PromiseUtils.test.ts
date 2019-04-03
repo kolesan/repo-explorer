@@ -1,4 +1,4 @@
-import { onlyLast, allInOrder, sequential, sequenceStartingValue, all } from "./PromiseUtils";
+import { onlyLast, allInOrder, sequential, sequenceStartingValue, every } from "./PromiseUtils";
 
 jest.useRealTimers();
 
@@ -48,7 +48,7 @@ test(`'sequential' lets you enqueue functions that produce promises using the re
 
 test(`'all' convenience method that allows attaching one resolution function to multiple promises`, async () => {
   let result = 0;
-  await all(
+  await every(
     delayedPromise(100).then(() => 1),
     delayedPromise(300).then(() => 2),
     delayedPromise(200).then(() => 3),
