@@ -10,7 +10,7 @@ declare module 'react-window-infinite-loader' {
     readonly threshold?: number;
   }
 
-  export type LoadMoreItemsFunction = (startIndex: number, stopIndex: number) => Promise<void>;
+  export type LoadMoreItemsFunction = (startIndex: number, stopIndex: number) => void;
   export type OnItemsRenderedFunction = (props: ListOnItemsRenderedProps) => any;
 
   export interface RendererCallback {
