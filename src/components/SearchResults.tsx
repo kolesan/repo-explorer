@@ -5,6 +5,7 @@ import InfiniteLoader, { InfiniteLoaderProps, RendererCallback, LoadMoreItemsFun
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import SearchResultsItem from "./search_results_item/SearchResultsItem";
 import AutoSizer from "react-virtualized-auto-sizer";
+import Spinner from "./Spinner";
 
 interface SearchProps {
   readonly loadMoreItems: LoadMoreItemsFunction;
@@ -53,9 +54,6 @@ export default function SearchResults(props: SearchProps) {
   function renderListItem({ data, index, style }: ListChildComponentProps) {
     const repo = data[index];
     const contributorCount = props.contributorCounts[index];
-    if (!repo) {
-      return <div style={style}>LOADING</div>;
-    }
     return <SearchResultsItem repo={repo} style={style} contributorCount={contributorCount}/>
   }
 

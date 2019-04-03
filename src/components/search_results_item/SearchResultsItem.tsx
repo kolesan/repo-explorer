@@ -12,8 +12,16 @@ interface SearchResultsItemProps {
 
 export default function SearchResultsItem(props: SearchResultsItemProps) {
   const { repo, style, contributorCount } = props;
-  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount }: Repo = repo;
+  
+  if (!repo) {
+    return (
+      <div className="search_results_item" style={style}>
+        <Spinner/>
+      </div>
+    );
+  }
 
+  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount }: Repo = repo;
   return (
     <div className="search_results_item" style={style}>
       <div className="search_results_item_panel">
