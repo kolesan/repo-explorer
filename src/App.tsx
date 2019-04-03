@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import log from './utils/Logging';
 import Search from './components/Search';
+import SearchBar from './components/search_bar/SearchBar';
 
 interface AppState {
   readonly searchQuery: string;
@@ -26,10 +27,10 @@ class App extends Component<AppProps, AppState> {
   render() {
     const { searchQuery } = this.state;
     return (
-      <div>
-        <input className="searchInput" placeholder="&#x1f50e; Search" value={searchQuery} onChange={this.queryChange}></input>
+      <React.Fragment>
+        <SearchBar value={searchQuery} onChange={this.queryChange} />
         <Search searchQuery={searchQuery}/>
-      </div>
+      </React.Fragment>
     );
   }
 }

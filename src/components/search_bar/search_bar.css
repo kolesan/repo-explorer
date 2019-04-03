@@ -1,0 +1,36 @@
+.search_bar {
+  --width: 400px;
+  --height: 40px;
+}
+
+.search_bar {
+  width: var(--width);
+  height: var(--height);
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+}
+
+.search_bar__background {
+  width: var(--width);
+  height: var(--height);
+  position: absolute;
+  z-index: -1;
+}
+
+.search_bar__icon {
+  margin: 0 0.5rem;
+}
+
+.search_bar__input {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+
+  background: transparent;
+  border: none;
+  outline: none;
+  
+  flex-grow: 1;
+}
