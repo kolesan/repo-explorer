@@ -8,3 +8,10 @@ export function onlyLast(then: Function) {
     }
   }
 }
+
+export function allInOrder(then: Function) {
+  let lastPromise = Promise.resolve();
+  return function toQueue(promise: Promise<any>) {
+    return lastPromise = lastPromise.then(() => promise.then(result => then(result)));
+  }
+}
