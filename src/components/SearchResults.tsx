@@ -3,7 +3,8 @@ import { Repo } from "../types/RepoListTypes";
 import log from "../utils/Logging";
 import InfiniteLoader, { InfiniteLoaderProps, RendererCallback, LoadMoreItemsFunction } from "react-window-infinite-loader";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
-import SearchResultsItem from "./SearchResultsItem";
+import SearchResultsItem from "./search_results_item/SearchResultsItem";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 interface SearchProps {
   readonly loadMoreItems: LoadMoreItemsFunction;
@@ -25,23 +26,27 @@ export default function SearchResults(props: SearchProps) {
 
   const listProps = {
     itemData: loadedRepos,
-    height: 750,
     itemCount: total,
-    itemSize: 250,
-    width: "100%"
+    itemSize: 160
   }
   
   return (
-    <InfiniteLoader {...loaderProps}>
-      {renderList}
-    </InfiniteLoader>
+    <div className="search_results__container">
+      <InfiniteLoader {...loaderProps}>
+        {renderList}
+      </InfiniteLoader>
+    </div>
   );
   
   function renderList({ onItemsRendered, ref }: RendererCallback) {
     return (
-      <FixedSizeList {...listProps} onItemsRendered={onItemsRendered} ref={ref}>
-        {renderListItem}
-      </FixedSizeList>
+      <AutoSizer>
+        {({ height, width }) => (
+          <FixedSizeList {...listProps} height={height} width={width} onItemsRendered={onItemsRendered} ref={ref}>
+            {renderListItem}
+          </FixedSizeList>
+        )}
+      </AutoSizer>
     );
   }
   

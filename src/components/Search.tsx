@@ -148,7 +148,7 @@ class Search extends Component<SearchProps, SearchState> {
           itemLoadedState,
           contributorCounts
         }
-        return <SearchResults {...resultListProps}></SearchResults>;
+        return <SearchResults {...resultListProps} />;
     }
   }
 
