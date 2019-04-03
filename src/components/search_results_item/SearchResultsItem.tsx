@@ -27,13 +27,22 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
           <div>{license ? license.toUpperCase() : "Unknown license"}</div>
           <div>{language}</div>
           <Stars count={starCount} />
-          <div>{forkCount}</div>
+          <Forks count={forkCount} />
           <div>{issueCount}</div>
           { contributorCount !== undefined ?
             <div>{contributorCount}</div> :
             <Spinner style={{width: "1rem"}}/> }
         </div>
       </div>
+    </div>
+  );
+}
+
+function Forks(props: any) {
+  return (
+    <div className="fork_count">
+      <img className="fork_count_image" src="resources/images/forks.png" />
+      {props.count}
     </div>
   );
 }
