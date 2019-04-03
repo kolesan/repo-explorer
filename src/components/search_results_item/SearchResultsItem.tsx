@@ -24,7 +24,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
           <Star filled={starred} />
         </div>
         <div className="search_results_item_panel__body">
-          <div>{license ? license : "Unknown license"}</div>
+          <div>{license ? license.toUpperCase() : "Unknown license"}</div>
           <div>{language}</div>
           <div>{starCount}</div>
           <div>{forkCount}</div>

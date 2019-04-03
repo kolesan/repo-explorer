@@ -36,7 +36,7 @@ describe('"repoSearch" returns a list of repositories from github api that match
         name: 'ts-react-json-table',
         owner: 'agracio',
         description: 'Simple React table component to display JSON data.',
-        license: 'MIT License',
+        license: 'mit',
         url: 'https://github.com/agracio/ts-react-json-table',
         starred: false,
         language: 'TypeScript',

@@ -19,7 +19,7 @@ export interface GitHubRepo {
   readonly description: string;
   readonly updatedAt: string;
   readonly licenseInfo: {
-    readonly name: string;
+    readonly key: string;
   };
   readonly url: string;
   readonly viewerHasStarred: boolean;

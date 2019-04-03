@@ -16,7 +16,7 @@ const getRepositoriesQuery = `
           updatedAt
           description
           licenseInfo {
-            name
+            key
           }
           url
           viewerHasStarred

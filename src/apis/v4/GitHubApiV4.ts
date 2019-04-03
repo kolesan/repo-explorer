@@ -34,7 +34,7 @@ function toRepoObject(gitHubRepo: GitHubRepo): Repo {
     name: name,
     owner: _get(owner, 'login', null),
     description,
-    license: _get(licenseInfo, 'name', null),
+    license: _get(licenseInfo, 'key', null),
     url,
     starred: viewerHasStarred,
     language: _get(primaryLanguage, 'name', null),
