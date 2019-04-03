@@ -1,4 +1,4 @@
-import { onlyLast, allInOrder, sequential, sequenceStartingValue } from "./PromiseUtils";
+import { onlyLast, allInOrder, sequential, sequenceStartingValue, all } from "./PromiseUtils";
 
 jest.useRealTimers();
 
@@ -46,6 +46,19 @@ test(`'sequential' lets you enqueue functions that produce promises using the re
   expect(results).toEqual([0, 1, 2, 3]);
 });
 
+test(`'all' convenience method that allows attaching one resolution function to multiple promises`, async () => {
+  let result = 0;
+  await all(
+    delayedPromise(100).then(() => 1),
+    delayedPromise(300).then(() => 2),
+    delayedPromise(200).then(() => 3),
+    delayedPromise(0).then(() => 4)
+  ).then((v: number) => result += v);
+
+  expect(result).toBe(10);
+});
+
 function delayedPromise(timeout: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
+
