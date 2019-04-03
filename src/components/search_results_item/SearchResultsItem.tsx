@@ -28,7 +28,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
         <img className="search_results_item_panel__background" src="resources/images/rectangle.svg"/>
         <div className="search_results_item_panel__header">
           <a href={url} target="_blank">{owner}/{name}</a>
-          <div>{description ? description : "No description provided"}</div>
+          <div className="search_results_item_panel__header__description">{description ? description : "No description provided"}</div>
           <Star filled={starred} />
         </div>
         <div className="search_results_item_panel__body">

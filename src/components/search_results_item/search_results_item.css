@@ -31,6 +31,12 @@
   align-items: flex-start;
 }
 
+.search_results_item_panel__header__description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .stared_status_image {
   height: 2rem;
   margin-left: auto;
