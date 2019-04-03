@@ -4,8 +4,9 @@ import { repoSearch } from "../apis/v4/GitHubApiV4";
 import { contributorCount } from "../apis/v3/GitHubApiV3";
 import Spinner from "./Spinner";
 import SearchResults from "./SearchResults";
-import _debounce from 'lodash/debounce'
+import _debounce from 'lodash/debounce';
 import log from "../utils/Logging";
+import { onlyLast, sequential } from "../utils/PromiseUtils";
 
 interface SearchProps {
   readonly searchQuery: string;
@@ -17,16 +18,19 @@ interface SearchState {
   readonly contributorCounts: number[];
   readonly status: Status;
 }
-const LOAD_COUNT = 10;
-const MINIMUM_SYMBOLS_BEFORE_SEARCHING = 2;
-
 enum Status {
   REST, LOADING, LOADED
 }
 
+const LOAD_COUNT = 10;
+const MINIMUM_SYMBOLS_BEFORE_SEARCHING = 2;
+
 class Search extends Component<SearchProps, SearchState> {
+  onlyLastPromise: Function;
+  toPromiseSequence: Function;
   constructor(props: SearchProps) {
     super(props);
+
     this.state = {
       status: Status.REST,
       searchResults: {
@@ -37,10 +41,21 @@ class Search extends Component<SearchProps, SearchState> {
       itemLoadedState: [],
       contributorCounts: []
     };
+
     this.onSearchQueryChanged = _debounce(this.onSearchQueryChanged, 400, { trailing: true });
+    this.onReposReceived = this.onReposReceived.bind(this);
+    this.enqueMoreResultsRequest = this.enqueMoreResultsRequest.bind(this);
+    this.putToSequence = this.putToSequence.bind(this);
+
+    this.onlyLastPromise = onlyLast(this.putToSequence);
+    this.toPromiseSequence = sequential(this.onReposReceived);
   }
 
-  async componentDidUpdate(prevProps: SearchProps) {
+  putToSequence(searchResult: RepoSearchResult) {
+    this.toPromiseSequence(() => Promise.resolve(searchResult));
+  }
+
+  componentDidUpdate(prevProps: SearchProps) {
     const newQuery = this.props.searchQuery;
     if (newQuery != prevProps.searchQuery) {
       this.onSearchQueryChanged(newQuery);
@@ -56,15 +71,18 @@ class Search extends Component<SearchProps, SearchState> {
         contributorCounts: [],
         status: Status.LOADING
       })
-      this.search(newQuery);
+      this.onlyLastPromise(this.requestRepos(newQuery));
     }
   }
 
-  async search(searchQuery: string, startCursor?: string) {
+  async requestRepos(searchQuery: string, startCursor?: string): Promise<RepoSearchResult> {
     log(`Searching: ${searchQuery}. Cursor: ${startCursor}`);
     const results = await repoSearch({ searchQuery, startCursor, count: LOAD_COUNT });
     log(`Found: ${results.total} ${searchQuery} ${JSON.stringify(results.repos.map(repo=>`${repo.owner}/${repo.name}`), null, "")} ${results.nextPageCursor}`);
+    return results;
+  }
 
+  onReposReceived(results: RepoSearchResult) {
     this.requestContributorCounts(this.state.loadedRepos.length, results.repos);
 
     let loadedRepos = [ ...this.state.loadedRepos, ...results.repos ];
@@ -89,6 +107,15 @@ class Search extends Component<SearchProps, SearchState> {
     })
   }
 
+  enqueMoreResultsRequest() {
+    this.toPromiseSequence((previousSearchResult: RepoSearchResult) => {
+      return this.requestRepos(
+        this.props.searchQuery,
+        previousSearchResult.nextPageCursor
+      )
+    });
+  }
+
   render() {
     switch(this.state.status) {
       case Status.REST:
@@ -97,11 +124,10 @@ class Search extends Component<SearchProps, SearchState> {
         return <Spinner/>;
       case Status.LOADED:
         const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.state;
-        const { total, nextPageCursor } = searchResults;
-        const { searchQuery } = this.props;
+        const { total } = searchResults;
 
         const resultListProps = {
-          loadMoreItems: () => this.search(searchQuery, nextPageCursor),
+          loadMoreItems: this.enqueMoreResultsRequest,
           total,
           loadedRepos,
           itemLoadedState,
