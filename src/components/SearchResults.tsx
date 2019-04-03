@@ -28,7 +28,7 @@ export default function SearchResults(props: SearchProps) {
   const listProps = {
     itemData: loadedRepos,
     itemCount: total,
-    itemSize: 160
+    itemSize: 120
   }
   
   return (
