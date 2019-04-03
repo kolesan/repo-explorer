@@ -28,7 +28,7 @@ export default function SearchResults(props: SearchProps) {
     height: 750,
     itemCount: total,
     itemSize: 250,
-    width: "75%"
+    width: "100%"
   }
   
   return (
