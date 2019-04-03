@@ -26,7 +26,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
         <div className="search_results_item_panel__body">
           <div>{license ? license.toUpperCase() : "Unknown license"}</div>
           <div>{language}</div>
-          <div>{starCount}</div>
+          <Stars count={starCount} />
           <div>{forkCount}</div>
           <div>{issueCount}</div>
           { contributorCount !== undefined ?
@@ -38,12 +38,18 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
   );
 }
 
-interface StartProps {
-  readonly filled: boolean;
+function Stars(props: any) {
+  return (
+    <div className="stars_count">
+      <img className="star_count_image" src="resources/images/star-filled.png" />
+      {props.count}
+    </div>
+  );
 }
-function Star(props: StartProps) {
+
+function Star(props: any) {
   if (props.filled) {
-    return <img className="star_image" src="resources/images/star-filled.png" />
+    return <img className="stared_status_image" src="resources/images/star-filled.png" />
   }
-  return <img className="star_image" src="resources/images/star.png" />
+  return <img className="stared_status_image" src="resources/images/star.png" />
 }

@@ -31,15 +31,24 @@
   align-items: flex-start;
 }
 
-.search_results_item_panel__header > .star_image {
+.stared_status_image {
   height: 2rem;
   margin-left: auto;
+}
+
+.stars_count {
+  display: flex;
+  align-items: center;
+}
+
+.star_count_image {
+  height: 1.5rem;
 }
 
 .search_results_item_panel__body {
   margin: 0.5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 .search_results_item_panel__body > * {
   margin-right: 1rem;
