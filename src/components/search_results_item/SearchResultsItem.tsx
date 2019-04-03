@@ -36,9 +36,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
           <div>{language}</div>
           <Stars count={starCount} />
           <Forks count={forkCount} />
-          { contributorCount !== undefined ?
-            <Contributors count={contributorCount} /> :
-            <Spinner style={{width: "1rem"}}/> }
+          <Contributors count={contributorCount} />
           <Issues count={issueCount} />
         </div>
       </div>
@@ -59,7 +57,9 @@ function Contributors(props: any) {
   return (
     <div className="contirbutor_count">
       <img className="contirbutor_count_image" src="resources/images/contributors.png" />
-      {props.count}
+      { props.count !== undefined ? 
+          props.count :
+          <Spinner className="contirbutor_count__spinner"/> }
     </div>
   );
 }
