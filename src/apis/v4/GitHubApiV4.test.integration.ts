@@ -1,6 +1,6 @@
 import log from '../../utils/Logging';
-import { repoSearch, star, unstar } from './GitHubApiV4';
-import { StarMutationResponse } from '../../types/RepoListTypes';
+import { repoSearch, star, unstar, getRepository } from './GitHubApiV4';
+import { StarMutationResponse } from '../../types/RepoTypes';
 
 jest.setTimeout(30000);
 
@@ -84,36 +84,41 @@ describe('"repoSearch" returns a list of repositories from github api that match
 });
 
 
-
-// describe(`can star and unstar a repository by id`, () => {
+test(`can get a repository by it's owner and name using 'getRepository'`, async () => {
   
-//   test(`using 'star' and 'unstar' methods`, async () => {
-//     //Get id
-//     let searchResponse = await repoSearch({
-//       searchQuery: 'kolesan/react-ts-table',
-//       count: 1
-//     });
-//     const repoId = searchResponse.repos[0].id;
+  let repo = await getRepository("kolesan", "react-ts-table");
 
-//     //Star
-//     const starResponse: StarMutationResponse = await star(repoId);
-//     expect(starResponse.starred).toBe(true);
-    
-//     searchResponse = await repoSearch({
-//       searchQuery: 'kolesan/react-ts-table',
-//       count: 1
-//     });
-//     expect(searchResponse.repos[0].starred).toBe(true);
+  expect(repo).toEqual(
+    {
+      id: 'MDEwOlJlcG9zaXRvcnkxNzcwODE5MDg=',
+      name: 'react-ts-table',
+      owner: 'kolesan',
+      description: 'Sortable table with react and typescript',
+      license: null,
+      url: 'https://github.com/kolesan/react-ts-table',
+      starred: true,
+      language: 'TypeScript',
+      starCount: 1,
+      forkCount: 0,
+      issueCount: 0,
+      commitCount: 78
+    }
+  );
 
-//     //Unstar
-//     const unstarResponse: StarMutationResponse = await unstar(repoId);
-//     expect(unstarResponse.starred).toBe(false);
-    
-//     searchResponse = await repoSearch({
-//       searchQuery: 'kolesan/react-ts-table',
-//       count: 1
-//     });
-//     expect(searchResponse.repos[0].starred).toBe(false);
-//   });
+});
 
-// });
+
+test(`can star and unstar a repository by id using 'star' and 'unstar' methods`, async () => {
+  //Get id
+  let repo = await getRepository("kolesan", "react-ts-table");
+
+  //Star
+  const starResponse: StarMutationResponse = await star(repo.id);
+  expect(starResponse.starred).toBe(true);
+  expect((await getRepository("kolesan", "react-ts-table")).starred).toBe(true);
+
+  //Unstar
+  const unstarResponse: StarMutationResponse = await unstar(repo.id);
+  expect(unstarResponse.starred).toBe(false);
+  expect((await getRepository("kolesan", "react-ts-table")).starred).toBe(false);
+});

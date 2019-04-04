@@ -1,11 +1,16 @@
 import { GraphQLClient } from 'graphql-request';
 import token from '../../token';
 import log from '../../utils/Logging';
-import { RepoSearchParams, RepoSearchResult, RepoSearchResultItem, StarMutationResponse } from '../../types/RepoListTypes';
-import { GithubRepoSearchResponse, GitHubRepo, GithubAddStarResponse, GithubRemoveStarResponse, GitHubStarMutationInput } from '../../types/GithubApiTypes';
-import allRepositoriesQuery from './queries/repositories';
+import { RepoSearchParams, RepoSearchResult, RepoSearchResultItem } from '../../types/RepoListTypes';
+import { 
+  GithubRepoSearchResponse, GitHubRepo, GithubAddStarResponse,
+  GithubRemoveStarResponse, GitHubStarMutationInput, GitHubRepoSearchResultsItem, GitHubGetRepoResponse
+} from '../../types/GithubApiTypes';
+import repositorySearchQuery from './queries/repositories';
+import getRepositoryQuery from './queries/repository';
 import starMutation from './queries/star';
 import unstarMutation from './queries/unstar';
+import { Repo, StarMutationResponse } from '../../types/RepoTypes';
 const _get = require('lodash/get');
 
 const client = new GraphQLClient('https://api.github.com/graphql', {
@@ -17,7 +22,7 @@ const client = new GraphQLClient('https://api.github.com/graphql', {
 
 
 export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
-  const response: GithubRepoSearchResponse = await client.request(allRepositoriesQuery, { searchQuery, startCursor, count });
+  const response: GithubRepoSearchResponse = await client.request(repositorySearchQuery, { searchQuery, startCursor, count });
   const { search } = response;
   return {
     total: search.repositoryCount,
@@ -26,7 +31,7 @@ export async function repoSearch({ searchQuery, startCursor, count }: RepoSearch
   }
 }
 
-function toRepoSearchResultItem(gitHubRepo: GitHubRepo): RepoSearchResultItem {
+function toRepoSearchResultItem(gitHubRepo: GitHubRepoSearchResultsItem): RepoSearchResultItem {
   const { name, owner, description, licenseInfo, url,
     viewerHasStarred, primaryLanguage, stargazers, forkCount, issues
   } = gitHubRepo;
@@ -42,6 +47,35 @@ function toRepoSearchResultItem(gitHubRepo: GitHubRepo): RepoSearchResultItem {
     starCount: _get(stargazers, 'totalCount', null),
     forkCount,
     issueCount: _get(issues, 'totalCount', null),
+  }
+}
+
+
+
+export async function getRepository(owner: string, name: string): Promise<Repo> {
+  const response: GitHubGetRepoResponse = await client.request(getRepositoryQuery, { owner, name });
+  const { repository } = response;
+  return toRepo(repository)
+}
+
+function toRepo(gitHubRepo: GitHubRepo): Repo {
+  const { id, name, owner, description, licenseInfo, url,
+    viewerHasStarred, primaryLanguage, stargazers, forkCount, issues, defaultBranchRef
+  } = gitHubRepo;
+
+  return {
+    id,
+    name: name,
+    owner: _get(owner, 'login', null),
+    description,
+    license: _get(licenseInfo, 'key', null),
+    url,
+    starred: viewerHasStarred,
+    language: _get(primaryLanguage, 'name', null),
+    starCount: _get(stargazers, 'totalCount', null),
+    forkCount,
+    issueCount: _get(issues, 'totalCount', null),
+    commitCount: _get(defaultBranchRef, 'target.history.totalCount', null)
   }
 }
 

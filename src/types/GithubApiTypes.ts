@@ -1,4 +1,3 @@
-//V3
 export interface GithubRepoSearchResponse {
   readonly search: {
     readonly pageInfo: {
@@ -10,7 +9,7 @@ export interface GithubRepoSearchResponse {
   };
 }
 
-export interface GitHubRepo {
+export interface GitHubRepoSearchResultsItem {
   readonly name: string;
   readonly owner: {
     readonly login: string;
@@ -33,7 +32,45 @@ export interface GitHubRepo {
   }
 }
 
-//V4
+
+
+export interface GitHubGetRepoResponse {
+  readonly repository: GitHubRepo;
+}
+
+export interface GitHubRepo {
+  readonly id: string;
+  readonly name: string;
+  readonly owner: {
+    readonly login: string;
+  };
+  readonly description: string;
+  readonly licenseInfo: {
+    readonly key: string;
+  };
+  readonly url: string;
+  readonly viewerHasStarred: boolean;
+  readonly primaryLanguage: {
+    readonly name: string;
+  };
+  readonly stargazers: {
+    readonly totalCount: number;
+  }
+  readonly forkCount: number;
+  readonly issues: {
+    readonly totalCount: number;
+  }
+  readonly defaultBranchRef: {
+    readonly target: {
+      readonly history: {
+        readonly totalCount: number;
+      }
+    }
+  }
+}
+
+
+
 export interface GitHubStarrable {
   readonly starrable: {
     readonly viewerHasStarred: boolean;
