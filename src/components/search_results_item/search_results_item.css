@@ -27,8 +27,16 @@
 
 .search_results_item_panel__header {
   margin: 0.5rem;
-  display: flex;
+  display: grid;
   align-items: flex-start;
+  grid-template-columns: 35% 60% 5%;
+  grid-template-rows: 1fr;
+}
+
+.search_results_item_panel__header__url {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .search_results_item_panel__header__description {
@@ -36,6 +44,16 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+.search_results_item_panel__body {
+  margin: 0.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+.search_results_item_panel__body > * {
+  margin-right: 1rem;
+}
+
 
 .stared_status_image {
   height: 2rem;
@@ -80,13 +98,4 @@
 }
 .issue_count_image {
   height: 1.7rem;
-}
-
-.search_results_item_panel__body {
-  margin: 0.5rem;
-  display: flex;
-  align-items: flex-end;
-}
-.search_results_item_panel__body > * {
-  margin-right: 1rem;
 }
