@@ -14,17 +14,19 @@ const client = new GraphQLClient('https://api.github.com/graphql', {
   }
 })
 
+
+
 export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
   const response: GithubRepoSearchResponse = await client.request(allRepositoriesQuery, { searchQuery, startCursor, count });
   const { search } = response;
   return {
     total: search.repositoryCount,
-    repos: search.nodes.map(toRepoObject),
+    repos: search.nodes.map(toRepoSearchResultItem),
     nextPageCursor: search.pageInfo.hasNextPage ? search.pageInfo.endCursor : undefined
   }
 }
 
-function toRepoObject(gitHubRepo: GitHubRepo): RepoSearchResultItem {
+function toRepoSearchResultItem(gitHubRepo: GitHubRepo): RepoSearchResultItem {
   const { name, owner, description, licenseInfo, url,
     viewerHasStarred, primaryLanguage, stargazers, forkCount, issues
   } = gitHubRepo;
@@ -44,6 +46,7 @@ function toRepoObject(gitHubRepo: GitHubRepo): RepoSearchResultItem {
 }
 
 
+
 export async function star(repoId: string): Promise<StarMutationResponse> {
   const response: GithubAddStarResponse = await client.request(starMutation, starMutationInput(repoId));
   return {
@@ -51,14 +54,12 @@ export async function star(repoId: string): Promise<StarMutationResponse> {
   }
 }
 
-
 export async function unstar(repoId: string): Promise<StarMutationResponse> {
   const response: GithubRemoveStarResponse = await client.request(unstarMutation, starMutationInput(repoId));
   return {
     starred: response.removeStar.starrable.viewerHasStarred
   }
 }
-
 
 function starMutationInput(repoId: string): GitHubStarMutationInput {
   return {
