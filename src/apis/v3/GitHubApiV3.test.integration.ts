@@ -23,9 +23,7 @@ describe('"commitStats" provides last year participation statistics for a repo',
     const participation = await commitStats("kolesan", "react-ts-table");
 
     expect(participation).toHaveLength(52);
-    expect(participation).toEqual([
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 34
-    ]);
+    expect(participation.reduce((acc, i) => acc + i, 0)).toEqual(78);
   });
 
 });
