@@ -1,5 +1,5 @@
-const getRepositoriesQuery = `
-  query getRepos($searchQuery: String!, $startCursor: String, $count: Int!){
+const repositorySearchQuery = `
+  query repositorySearch($searchQuery: String!, $startCursor: String, $count: Int!){
     search(query: $searchQuery, after: $startCursor, first: $count, type:REPOSITORY){
       pageInfo {
         hasNextPage
@@ -13,7 +13,6 @@ const getRepositoriesQuery = `
           owner {
             login
           }
-          updatedAt
           description
           licenseInfo {
             key
@@ -30,18 +29,9 @@ const getRepositoriesQuery = `
           issues {
             totalCount
           }
-          defaultBranchRef {
-            target {
-              ... on Commit {
-                history {
-                  totalCount
-                }
-              }
-            }
-          }
         }
       }
     }
   }
 `;
-export default getRepositoriesQuery;
+export default repositorySearchQuery;

@@ -1,9 +1,9 @@
 import { GraphQLClient } from 'graphql-request';
 import token from '../../token';
 import log from '../../utils/Logging';
-import { RepoSearchParams, RepoSearchResult, Repo, StarMutationResponse } from '../../types/RepoListTypes';
+import { RepoSearchParams, RepoSearchResult, RepoSearchResultItem, StarMutationResponse } from '../../types/RepoListTypes';
 import { GithubRepoSearchResponse, GitHubRepo, GithubAddStarResponse, GithubRemoveStarResponse, GitHubStarMutationInput } from '../../types/GithubApiTypes';
-import getRepositoriesQuery from './queries/repositories';
+import allRepositoriesQuery from './queries/repositories';
 import starMutation from './queries/star';
 import unstarMutation from './queries/unstar';
 const _get = require('lodash/get');
@@ -15,7 +15,7 @@ const client = new GraphQLClient('https://api.github.com/graphql', {
 })
 
 export async function repoSearch({ searchQuery, startCursor, count }: RepoSearchParams): Promise<RepoSearchResult> {
-  const response: GithubRepoSearchResponse = await client.request(getRepositoriesQuery, { searchQuery, startCursor, count });
+  const response: GithubRepoSearchResponse = await client.request(allRepositoriesQuery, { searchQuery, startCursor, count });
   const { search } = response;
   return {
     total: search.repositoryCount,
@@ -24,13 +24,12 @@ export async function repoSearch({ searchQuery, startCursor, count }: RepoSearch
   }
 }
 
-function toRepoObject(gitHubRepo: GitHubRepo): Repo {
-  const { id, name, owner, description, licenseInfo, url,
-    viewerHasStarred, primaryLanguage, stargazers, forkCount, issues, defaultBranchRef
+function toRepoObject(gitHubRepo: GitHubRepo): RepoSearchResultItem {
+  const { name, owner, description, licenseInfo, url,
+    viewerHasStarred, primaryLanguage, stargazers, forkCount, issues
   } = gitHubRepo;
 
   return {
-    id,
     name: name,
     owner: _get(owner, 'login', null),
     description,
@@ -41,7 +40,6 @@ function toRepoObject(gitHubRepo: GitHubRepo): Repo {
     starCount: _get(stargazers, 'totalCount', null),
     forkCount,
     issueCount: _get(issues, 'totalCount', null),
-    commitCount: _get(defaultBranchRef, 'target.history.totalCount', null)
   }
 }
 

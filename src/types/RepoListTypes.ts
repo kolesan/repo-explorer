@@ -6,12 +6,11 @@ export interface RepoSearchParams {
 
 export interface RepoSearchResult {
   readonly total: number;
-  readonly repos: Repo[];
+  readonly repos: RepoSearchResultItem[];
   readonly nextPageCursor?: string;
 }
 
-export interface Repo {
-  readonly id: string;
+export interface RepoSearchResultItem {
   readonly name: string;
   readonly owner: string;
   readonly description: string;
@@ -22,7 +21,6 @@ export interface Repo {
   readonly starCount: number;
   readonly forkCount: number;
   readonly issueCount: number;
-  readonly commitCount: number;
 }
 
 export interface ContributorsWithIndex {

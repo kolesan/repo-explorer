@@ -16,23 +16,20 @@ describe('"repoSearch" returns a list of repositories from github api that match
     expect(response.repos).toHaveLength(3);
     expect(response.repos).toContainEqual(
       {
-        id: expect.any(String),
         name: 'react-ts-table',
         owner: 'kolesan',
         description: 'Sortable table with react and typescript',
         license: null,
         url: 'https://github.com/kolesan/react-ts-table',
-        starred: false,
+        starred: true,
         language: 'TypeScript',
-        starCount: 0,
+        starCount: 1,
         forkCount: 0,
-        issueCount: 0,
-        commitCount: 78
+        issueCount: 0
       }
     );
     expect(response.repos).toContainEqual(
       {
-        id: expect.any(String),
         name: 'ts-react-json-table',
         owner: 'agracio',
         description: 'Simple React table component to display JSON data.',
@@ -42,13 +39,11 @@ describe('"repoSearch" returns a list of repositories from github api that match
         language: 'TypeScript',
         starCount: 13,
         forkCount: 4,
-        issueCount: 5,
-        commitCount: 46
+        issueCount: 5
       }
     );
     expect(response.repos).toContainEqual(
       {
-        id: expect.any(String),
         name: 'react_table_ts',
         owner: 'tomo0613',
         description: null,
@@ -58,8 +53,7 @@ describe('"repoSearch" returns a list of repositories from github api that match
         language: 'TypeScript',
         starCount: 0,
         forkCount: 0,
-        issueCount: 0,
-        commitCount: 2
+        issueCount: 0
       }
     );
   });
@@ -91,35 +85,35 @@ describe('"repoSearch" returns a list of repositories from github api that match
 
 
 
-describe(`can star and unstar a repository by id`, () => {
+// describe(`can star and unstar a repository by id`, () => {
   
-  test(`using 'star' and 'unstar' methods`, async () => {
-    //Get id
-    let searchResponse = await repoSearch({
-      searchQuery: 'kolesan/react-ts-table',
-      count: 1
-    });
-    const repoId = searchResponse.repos[0].id;
+//   test(`using 'star' and 'unstar' methods`, async () => {
+//     //Get id
+//     let searchResponse = await repoSearch({
+//       searchQuery: 'kolesan/react-ts-table',
+//       count: 1
+//     });
+//     const repoId = searchResponse.repos[0].id;
 
-    //Star
-    const starResponse: StarMutationResponse = await star(repoId);
-    expect(starResponse.starred).toBe(true);
+//     //Star
+//     const starResponse: StarMutationResponse = await star(repoId);
+//     expect(starResponse.starred).toBe(true);
     
-    searchResponse = await repoSearch({
-      searchQuery: 'kolesan/react-ts-table',
-      count: 1
-    });
-    expect(searchResponse.repos[0].starred).toBe(true);
+//     searchResponse = await repoSearch({
+//       searchQuery: 'kolesan/react-ts-table',
+//       count: 1
+//     });
+//     expect(searchResponse.repos[0].starred).toBe(true);
 
-    //Unstar
-    const unstarResponse: StarMutationResponse = await unstar(repoId);
-    expect(unstarResponse.starred).toBe(false);
+//     //Unstar
+//     const unstarResponse: StarMutationResponse = await unstar(repoId);
+//     expect(unstarResponse.starred).toBe(false);
     
-    searchResponse = await repoSearch({
-      searchQuery: 'kolesan/react-ts-table',
-      count: 1
-    });
-    expect(searchResponse.repos[0].starred).toBe(false);
-  });
+//     searchResponse = await repoSearch({
+//       searchQuery: 'kolesan/react-ts-table',
+//       count: 1
+//     });
+//     expect(searchResponse.repos[0].starred).toBe(false);
+//   });
 
-});
+// });

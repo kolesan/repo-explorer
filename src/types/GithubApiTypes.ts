@@ -11,13 +11,11 @@ export interface GithubRepoSearchResponse {
 }
 
 export interface GitHubRepo {
-  readonly id: string;
   readonly name: string;
   readonly owner: {
     readonly login: string;
   };
   readonly description: string;
-  readonly updatedAt: string;
   readonly licenseInfo: {
     readonly key: string;
   };
@@ -32,13 +30,6 @@ export interface GitHubRepo {
   readonly forkCount: number;
   readonly issues: {
     readonly totalCount: number;
-  }
-  readonly defaultBranchRef: {
-    readonly target: {
-      readonly history: {
-        readonly totalCount: number;
-      }
-    }
   }
 }
 

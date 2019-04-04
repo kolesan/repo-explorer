@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RepoSearchResult, Repo, ContributorsWithIndex } from "../types/RepoListTypes";
+import { RepoSearchResult, RepoSearchResultItem, ContributorsWithIndex } from "../types/RepoListTypes";
 import { repoSearch } from "../apis/v4/GitHubApiV4";
 import { contributorCount } from "../apis/v3/GitHubApiV3";
 import Spinner from "./Spinner";
@@ -13,7 +13,7 @@ interface SearchProps {
 }
 interface SearchState {
   readonly searchResults: RepoSearchResult;
-  readonly loadedRepos: Repo[];
+  readonly loadedRepos: RepoSearchResultItem[];
   readonly itemLoadedState: boolean[];
   readonly contributorCounts: number[];
   readonly status: Status;
@@ -97,7 +97,7 @@ class Search extends Component<SearchProps, SearchState> {
     });
   }
 
-  requestContributorCounts(startingIndex: any, repos: Repo[]): Promise<ContributorsWithIndex>[] {
+  requestContributorCounts(startingIndex: any, repos: RepoSearchResultItem[]): Promise<ContributorsWithIndex>[] {
     let requests: Promise<ContributorsWithIndex>[] = [];
     repos.forEach((repo, i) => {
       requests.push(new Promise(resolve => {
