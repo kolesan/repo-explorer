@@ -96,7 +96,7 @@ function Description(props: any) {
   }
   
   const { description, license, starred, language, starCount, forkCount, issueCount, commitCount }: Repo = repo;
-  const effectiveHours = contributorCount ? commitCount * contributorCount / issueCount : undefined;
+  const effectiveHours = contributorCount ? calculateEffectiveHours(commitCount, contributorCount, issueCount) : undefined;
   return (
     <div className="repo_view__description">
       <div className="repo_view__description__top">
@@ -118,11 +118,12 @@ function Description(props: any) {
 
 function HourGraph(props: any) {
   const { commitStatistics, contributorCount, issueCount } = props;
+  const canCalculateGraph = commitStatistics && contributorCount !== undefined && issueCount != undefined;
   return (
     <div className="repo_view__hours">
       <div>Effective hours spent per year</div>
       <div className="repo_view__hours_graph">
-        { commitStatistics && contributorCount && issueCount ? 
+        { canCalculateGraph ? 
           <ResponsiveContainer width="95%" height={400}>
             <AreaChart data={commitStatisticToLineChartFormat(commitStatistics, contributorCount, issueCount)}>
               <Area type="monotone" dataKey="value" stroke="gray" fill="lightgray" />
@@ -138,10 +139,18 @@ function HourGraph(props: any) {
 }
 
 function commitStatisticToLineChartFormat(commitStatistics: number[], contributorCount: number, issueCount: number): object[] {
-  let lineChartData = commitStatistics.map(commitCount => ({ name: "", value: commitCount * contributorCount / issueCount }));
+  let lineChartData = commitStatistics.map(commitCount =>
+    ({ 
+      name: "", 
+      value: calculateEffectiveHours(commitCount, contributorCount, issueCount)
+    })
+  );
   lineChartData.forEach((obj, i) => obj.name = String(i + 1));
-  log(lineChartData);
   return lineChartData;
+}
+
+function calculateEffectiveHours(commits: number, contributors: number, issues: number): number {
+  return commits * contributors / (issues ? issues : 1);
 }
 
 export default RepoView;
