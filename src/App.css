@@ -49,3 +49,20 @@ a:visited {
 #root > .search_bar {
   margin: 1rem 0;
 }
+
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+
+  color: var(--font-color);
+  font-size: var(--font-size);
+  font-family: var(--font-family);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
