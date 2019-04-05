@@ -83,7 +83,7 @@ function Header(props: any) {
     <div className="repo_view__header">
       {
         repo ? 
-          <a className="repo_view__header__url" href={repo.url} target="_blank">{owner}/{name}</a> :
+          <a className="repo_view__header__url text-url" href={repo.url} target="_blank">{owner}/{name}</a> :
           <span>{owner}/{name}</span>
       }
       <BalsamiqButton className="repo_view__header__star_button"

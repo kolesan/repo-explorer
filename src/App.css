@@ -13,6 +13,7 @@ html {
 html {
   --font-family: 'Balsamiq', "Comic Sans MS", cursive, sans-serif;
   --font-size: 1.35rem;
+  --font-color: initial;
   width: 100%;
   height: 100%;
 }
@@ -38,18 +39,21 @@ body {
   width: 100%;
 }
 
-a {
-  color: #0C5394;
-  text-decoration: none;
-}
-a:visited {
-  color: #670d94;
-}
-
 #root > .search_bar {
   margin: 1rem 0;
 }
 
+
+a {
+  color: var(--font-color);
+  text-decoration: none;
+}
+.text-url:visited {
+  color: #670d94;
+}
+.text-url {
+  color: #0C5394;
+}
 
 button {
   border: 0;
