@@ -5,7 +5,7 @@ export default function Stars(props: any) {
   return (
     <div className="stars_count">
       <img className="star_count_image" src="/resources/images/star-filled.png" />
-      {props.count}
+      {props.count.toLocaleString('en-US')}
     </div>
   );
 }

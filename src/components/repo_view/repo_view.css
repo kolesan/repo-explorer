@@ -3,10 +3,11 @@
   height: 100%;
 
   display: grid;
-  grid-template-columns: 75vw;
+  grid-template-columns: minmax(450px, 1300px);
   grid-template-rows: 2rem auto auto;
   justify-content: center;
   align-content: center;
+  padding: 0 3rem;
 }
 .repo_view > * {
   margin-bottom: 0.6rem;
@@ -42,6 +43,7 @@
 }
 .repo_view__description__bottom {
   display: flex;
+  flex-wrap: wrap;
 }
 .repo_view__description__bottom > *{
   margin-right: 1rem;
@@ -56,5 +58,4 @@
 }
 .repo_view__hours_graph {
   display: flex;
-  /* justify-content: center; */
 }

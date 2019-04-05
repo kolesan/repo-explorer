@@ -8,7 +8,7 @@ export default function Contributors(props: any) {
       <img className="contributor_count_image" src="/resources/images/contributors.png" />
       { 
         props.count !== undefined ? 
-          props.count :
+          props.count.toLocaleString('en-US') :
           <Spinner className="contributor_count__spinner"/>
       }
     </div>
