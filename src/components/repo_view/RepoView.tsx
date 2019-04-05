@@ -5,11 +5,11 @@ import { getRepository, star, unstar } from '../../apis/v4/GitHubApiV4';
 import { Repo, StarMutationResponse } from '../../types/RepoTypes';
 import Spinner from '../Spinner';
 import { commitStats, contributorCount } from '../../apis/v3/GitHubApiV3';
-import IsStarred from '../repo_data/IsStarred';
-import Stars from '../repo_data/Stars';
-import Forks from '../repo_data/Forks';
-import Contributors from '../repo_data/Contributors';
-import Issues from '../repo_data/Issues';
+import IsStarred from '../repo_data/is_starred/IsStarred';
+import Stars from '../repo_data/stars/Stars';
+import Forks from '../repo_data/forks/Forks';
+import Contributors from '../repo_data/contributors/Contributors';
+import Issues from '../repo_data/issues/Issues';
 
 interface RepoViewState {
   readonly repo?: Repo;

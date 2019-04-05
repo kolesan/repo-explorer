@@ -3,11 +3,11 @@ import './search_results_item.css';
 import React from "react";
 import Spinner from "../Spinner";
 import { Repo } from '../../types/RepoTypes';
-import IsStarred from '../repo_data/IsStarred';
-import Stars from '../repo_data/Stars';
-import Forks from '../repo_data/Forks';
-import Contributors from '../repo_data/Contributors';
-import Issues from '../repo_data/Issues';
+import IsStarred from '../repo_data/is_starred/IsStarred';
+import Stars from '../repo_data/stars/Stars';
+import Forks from '../repo_data/forks/Forks';
+import Contributors from '../repo_data/contributors/Contributors';
+import Issues from '../repo_data/issues/Issues';
 
 interface SearchResultsItemProps { 
   readonly repo: Repo;

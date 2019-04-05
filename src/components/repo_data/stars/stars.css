@@ -1,0 +1,8 @@
+.stars_count {
+  display: flex;
+  align-items: center;
+}
+.star_count_image {
+  height: 1.5rem;
+  margin-right: 0.3rem;
+}

@@ -1,0 +1,13 @@
+.contributor_count {
+  display: flex;
+  align-items: flex-end;
+}
+.contributor_count_image {
+  height: 1.4rem;
+  margin: 0 0.3rem 0.2rem 0;
+}
+.contributor_count__spinner {
+  align-self: center;
+  height: 1.4rem;
+  margin-left: 0.3rem;
+}

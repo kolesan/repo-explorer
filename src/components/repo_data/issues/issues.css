@@ -1,0 +1,7 @@
+.issue_count {
+  display: flex;
+  align-items: flex-end;
+}
+.issue_count_image {
+  height: 1.7rem;
+}
