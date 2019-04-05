@@ -10,7 +10,7 @@ import Stars from '../repo_data/stars/Stars';
 import Forks from '../repo_data/forks/Forks';
 import Contributors from '../repo_data/contributors/Contributors';
 import Issues from '../repo_data/issues/Issues';
-import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area, Tooltip } from 'recharts';
 import _get from 'lodash/get';
 import EffectiveHours from '../repo_data/effective_hours/EffectiveHours';
 import BalsamiqPanel from '../balsamiq/panel/BalsamiqPanel';
@@ -137,10 +137,12 @@ function HourGraph(props: any) {
         { canCalculateGraph ? 
           <ResponsiveContainer width="95%" height={400}>
             <AreaChart data={commitStatisticToLineChartFormat(commitStatistics, contributorCount, issueCount)}>
-              <Area type="monotone" dataKey="value" stroke="gray" fill="lightgray" />
               <CartesianGrid stroke="#ccc" />
-              <XAxis dataKey="name" />
+              <Area type="monotone" dataKey="commits" stroke="red" />
+              <Area type="monotone" dataKey="hours" stroke="gray" fill="lightgray" />
+              <XAxis dataKey="week" />
               <YAxis />
+              <Tooltip />
             </AreaChart>
           </ResponsiveContainer>
           : <Spinner style={{margin: "auto"}} /> }
@@ -152,11 +154,12 @@ function HourGraph(props: any) {
 function commitStatisticToLineChartFormat(commitStatistics: number[], contributorCount: number, issueCount: number): object[] {
   let lineChartData = commitStatistics.map(commitCount =>
     ({ 
-      name: "", 
-      value: calculateEffectiveHours(commitCount, contributorCount, issueCount)
+      week: "", 
+      commits: commitCount,
+      hours: calculateEffectiveHours(commitCount, contributorCount, issueCount).toFixed(2)
     })
   );
-  lineChartData.forEach((obj, i) => obj.name = String(i + 1));
+  lineChartData.forEach((obj, i) => obj.week = String(i + 1));
   return lineChartData;
 }
 
