@@ -11,6 +11,7 @@ import Forks from '../repo_data/forks/Forks';
 import Contributors from '../repo_data/contributors/Contributors';
 import Issues from '../repo_data/issues/Issues';
 import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import _get from 'lodash/get';
 
 interface RepoViewState {
   readonly repo?: Repo;
@@ -37,10 +38,11 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
   
   async componentDidMount() {
     const { owner, name } = this.props.match.params;
-    this.setState({ repo: await getRepository(owner, name) });
-    this.setState({ contributorCount: await contributorCount(owner, name) });
-    commitStats(owner, name)
-      .then(commitStatistics => this.setState({ commitStatistics }))
+    this.setState({
+      repo: await getRepository(owner, name),
+      contributorCount: await contributorCount(owner, name),
+      commitStatistics: await commitStats(owner, name)
+    });
   }
 
   async onStarButtonClick() {
@@ -56,11 +58,12 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
   render() {
     const { owner, name } = this.props.match.params;
     const { repo, contributorCount, commitStatistics } = this.state;
+    const issueCount = _get(repo, 'issueCount', null);
     return (
       <div className="repo_view">
         <Header owner={owner} name={name} repo={repo} onStarButtonClick={this.onStarButtonClick} />
         <Description repo={repo} contributorCount={contributorCount} />
-        <HourGraph commitStatistics={commitStatistics} contributorCount={contributorCount} />
+        <HourGraph commitStatistics={commitStatistics} contributorCount={contributorCount} issueCount={issueCount}/>
       </div>
     );
   }
@@ -111,14 +114,14 @@ function Description(props: any) {
 }
 
 function HourGraph(props: any) {
-  const { commitStatistics, contributorCount } = props;
+  const { commitStatistics, contributorCount, issueCount } = props;
   return (
     <div className="repo_view__hours">
       <div>Effective hours spent per year</div>
       <div className="repo_view__hours_graph">
-        { commitStatistics ? 
+        { commitStatistics && contributorCount && issueCount ? 
           <ResponsiveContainer width="95%" height={400}>
-            <AreaChart data={commitStatisticToLineChartFormat(commitStatistics, contributorCount)}>
+            <AreaChart data={commitStatisticToLineChartFormat(commitStatistics, contributorCount, issueCount)}>
               <Area type="monotone" dataKey="value" stroke="gray" fill="lightgray" />
               <CartesianGrid stroke="#ccc" />
               <XAxis dataKey="name" />
@@ -131,8 +134,8 @@ function HourGraph(props: any) {
   );
 }
 
-function commitStatisticToLineChartFormat(commitStatistics: number[], contributorCount: number): object[] {
-  let lineChartData = commitStatistics.map(commitCount => ({ name: "", value: commitCount }));
+function commitStatisticToLineChartFormat(commitStatistics: number[], contributorCount: number, issueCount: number): object[] {
+  let lineChartData = commitStatistics.map(commitCount => ({ name: "", value: commitCount * contributorCount / issueCount }));
   lineChartData.forEach((obj, i) => obj.name = String(i + 1));
   log(lineChartData);
   return lineChartData;
