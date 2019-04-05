@@ -4,7 +4,6 @@ import InfiniteLoader, { InfiniteLoaderProps, RendererCallback, LoadMoreItemsFun
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import SearchResultsItem from "./search_results_item/SearchResultsItem";
 import AutoSizer from "react-virtualized-auto-sizer";
-import Spinner from "./Spinner";
 import { RepoSearchResultItem } from "../types/RepoListTypes";
 
 interface SearchProps {
