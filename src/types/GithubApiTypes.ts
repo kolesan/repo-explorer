@@ -71,6 +71,16 @@ export interface GitHubRepo {
 
 
 
+export interface GitHubGetRepoStarsResponse {
+  readonly repository: {
+    readonly stargazers: {
+      readonly totalCount: number;
+    }
+  };
+}
+
+
+
 export interface GitHubStarrable {
   readonly starrable: {
     readonly viewerHasStarred: boolean;

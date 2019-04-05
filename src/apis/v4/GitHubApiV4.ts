@@ -4,11 +4,12 @@ import log from '../../utils/Logging';
 import { RepoSearchParams, RepoSearchResult, RepoSearchResultItem } from '../../types/RepoListTypes';
 import { 
   GithubRepoSearchResponse, GitHubRepo, GithubAddStarResponse,
-  GithubRemoveStarResponse, GitHubStarMutationInput, GitHubRepoSearchResultsItem, GitHubGetRepoResponse
+  GithubRemoveStarResponse, GitHubStarMutationInput, GitHubRepoSearchResultsItem, GitHubGetRepoResponse, GitHubGetRepoStarsResponse
 } from '../../types/GithubApiTypes';
 import repositorySearchQuery from './queries/repositories';
 import getRepositoryQuery from './queries/repository';
 import starMutation from './queries/star';
+import getRepositoryStarsQuery from './queries/stars';
 import unstarMutation from './queries/unstar';
 import { Repo, StarMutationResponse } from '../../types/RepoTypes';
 const _get = require('lodash/get');
@@ -77,6 +78,13 @@ function toRepo(gitHubRepo: GitHubRepo): Repo {
     issueCount: _get(issues, 'totalCount', null),
     commitCount: _get(defaultBranchRef, 'target.history.totalCount', null)
   }
+}
+
+
+
+export async function getRepositoryStars(owner: string, name: string): Promise<number> {
+  const response: GitHubGetRepoStarsResponse = await client.request(getRepositoryStarsQuery, { owner, name });
+  return response.repository.stargazers.totalCount;
 }
 
 

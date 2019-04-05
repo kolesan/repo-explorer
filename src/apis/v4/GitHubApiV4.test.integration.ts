@@ -1,5 +1,5 @@
 import log from '../../utils/Logging';
-import { repoSearch, star, unstar, getRepository } from './GitHubApiV4';
+import { repoSearch, star, unstar, getRepository, getRepositoryStars } from './GitHubApiV4';
 import { StarMutationResponse } from '../../types/RepoTypes';
 
 jest.setTimeout(30000);
@@ -106,6 +106,17 @@ test(`can get a repository by it's owner and name using 'getRepository'`, async 
   );
 
 });
+
+
+
+test(`can get repository star count by it's owner and name using 'getRepositoryStars'`, async () => {
+  let stars = await getRepositoryStars("kolesan", "react-ts-table");
+  expect(stars).toEqual(1);
+  
+  stars = await getRepositoryStars("kolesan", "repo-explorer");
+  expect(stars).toEqual(0);
+});
+
 
 
 test(`can star and unstar a repository by id using 'star' and 'unstar' methods`, async () => {
