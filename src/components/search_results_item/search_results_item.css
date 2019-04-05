@@ -78,15 +78,15 @@
   margin-bottom: 0.1rem;
 }
 
-.contirbutor_count {
+.contributor_count {
   display: flex;
   align-items: flex-end;
 }
-.contirbutor_count_image {
+.contributor_count_image {
   height: 1.4rem;
   margin: 0 0.3rem 0.2rem 0;
 }
-.contirbutor_count__spinner {
+.contributor_count__spinner {
   align-self: center;
   height: 1.4rem;
   margin-left: 0.3rem;
