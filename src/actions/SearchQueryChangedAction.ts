@@ -8,7 +8,6 @@ export interface SearchQueryChangedAction {
 }
 
 export default function searchQueryChanged(query: string): SearchQueryChangedAction {
-  log("dispatching", query);
   return {
     type: SEARCH_QUERY_CHANGED,
     payload: query

@@ -6,7 +6,6 @@ import log from "../utils/Logging";
 
 
 function mapStateToProps(state: any) {
-  log("Mapping state")
   return { searchQuery: state.searchQuery };
 }
 
