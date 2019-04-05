@@ -1,7 +1,7 @@
 import React from "react";
 import log from "../utils/Logging";
 import InfiniteLoader, { InfiniteLoaderProps, RendererCallback, LoadMoreItemsFunction } from "react-window-infinite-loader";
-import { FixedSizeList, ListChildComponentProps } from "react-window";
+import { FixedSizeList, ListChildComponentProps, ListOnScrollProps } from "react-window";
 import SearchResultsItem from "./search_results_item/SearchResultsItem";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { RepoSearchResultItem } from "../types/RepoListTypes";
@@ -12,11 +12,13 @@ interface SearchProps {
   readonly loadedRepos: RepoSearchResultItem[];
   readonly itemLoadedState: boolean[];
   readonly contributorCounts: number[];
+  readonly onScroll: (offset: number) => void;
+  readonly scrollOffset: number;
 }
 
 export default function SearchResults(props: SearchProps) {
 
-  const { total, loadedRepos, itemLoadedState, loadMoreItems } = props;
+  const { total, loadedRepos, itemLoadedState, loadMoreItems, scrollOffset } = props;
 
   const loaderProps: InfiniteLoaderProps = {
     isItemLoaded: index => itemLoadedState[index],
@@ -27,9 +29,11 @@ export default function SearchResults(props: SearchProps) {
   const listProps = {
     itemData: loadedRepos,
     itemCount: total,
-    itemSize: 110
+    itemSize: 110,
+    initialScrollOffset: scrollOffset
   }
   
+
   return (
     <div className="search_results__container">
       <InfiniteLoader {...loaderProps}>
@@ -42,7 +46,7 @@ export default function SearchResults(props: SearchProps) {
     return (
       <AutoSizer>
         {({ height, width }) => (
-          <FixedSizeList {...listProps} height={height} width={width} onItemsRendered={onItemsRendered} ref={ref}>
+          <FixedSizeList {...listProps} height={height} width={width} onItemsRendered={onItemsRendered} ref={ref} onScroll={onScroll}>
             {renderListItem}
           </FixedSizeList>
         )}
@@ -56,4 +60,7 @@ export default function SearchResults(props: SearchProps) {
     return <SearchResultsItem repo={repo} style={style} contributorCount={contributorCount}/>
   }
 
+  function onScroll({scrollOffset}: ListOnScrollProps) {
+    props.onScroll(scrollOffset);
+  }
 }

@@ -9,4 +9,5 @@ export interface SearchState {
   readonly itemLoadedState: boolean[];
   readonly contributorCounts: number[];
   readonly status: SearchStatus;
+  readonly scrollOffset: number;
 }

@@ -27,6 +27,7 @@ class Search extends Component<SearchProps> {
     this.onSearchQueryChanged = _debounce(this.onSearchQueryChanged, 400, { trailing: true });
     this.enqueMoreResultsRequest = this.enqueMoreResultsRequest.bind(this);
     this.displayContributorCount = this.displayContributorCount.bind(this);
+    this.saveScrollOffset = this.saveScrollOffset.bind(this);
 
     this.onlyLastPromise = onlyLast(this.putToSequence.bind(this));
     this.toPromiseSequence = sequential(this.onReposReceived.bind(this));
@@ -103,7 +104,7 @@ class Search extends Component<SearchProps> {
 
     let contributorCounts = [...this.props.searchState.contributorCounts];
     contributorCounts[index] = contributorCount;
-    
+
     this.props.searchStateChanged({contributorCounts});
   }
 
@@ -116,6 +117,10 @@ class Search extends Component<SearchProps> {
     });
   }
 
+  saveScrollOffset(offset: number) {
+    this.props.searchStateChanged({scrollOffset: offset});
+  }
+
   render() {
     switch(this.props.searchState.status) {
       case SearchStatus.REST:
@@ -123,7 +128,7 @@ class Search extends Component<SearchProps> {
       case SearchStatus.LOADING:
         return <Spinner/>;
       case SearchStatus.LOADED:
-        const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.props.searchState;
+        const { searchResults, loadedRepos, itemLoadedState, contributorCounts, scrollOffset } = this.props.searchState;
         const { total } = searchResults;
 
         const resultListProps = {
@@ -131,7 +136,9 @@ class Search extends Component<SearchProps> {
           total,
           loadedRepos,
           itemLoadedState,
-          contributorCounts
+          contributorCounts,
+          onScroll: this.saveScrollOffset,
+          scrollOffset
         }
         return <SearchResults {...resultListProps} />;
     }

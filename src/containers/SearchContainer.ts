@@ -7,7 +7,6 @@ import { SearchState } from "../state_model/SearchState";
 
 
 function mapStateToProps({ searchQuery, searchState }: any) {
-  log("updating state", searchQuery, searchState);
   return { searchQuery, searchState };
 }
 

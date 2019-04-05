@@ -10,7 +10,8 @@ const defaultSearchState = {
   },
   loadedRepos: [],
   itemLoadedState: [],
-  contributorCounts: []
+  contributorCounts: [],
+  scrollOffset: 0
 }
 
 export default function searchStateReducer(state: SearchState = defaultSearchState, action: SearchStateChangedAction): SearchState {
