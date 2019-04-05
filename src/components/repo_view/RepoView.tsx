@@ -12,7 +12,7 @@ import Contributors from '../repo_data/contributors/Contributors';
 import Issues from '../repo_data/issues/Issues';
 import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import _get from 'lodash/get';
-import EffectiveHours from '../repo_data/effective_hours/effective_hours';
+import EffectiveHours from '../repo_data/effective_hours/EffectiveHours';
 
 interface RepoViewState {
   readonly repo?: Repo;
