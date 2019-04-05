@@ -29,13 +29,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.5rem;
+  padding: 0.6rem;
+}
+.repo_view__description > :first-child {
+  margin-bottom: 1.5rem;
 }
 .repo_view__description__top {
   display: flex;
 }
 .repo_view__description__bottom {
   display: flex;
+}
+.repo_view__description__bottom > *{
+  margin-right: 1rem;
 }
 
 .repo_view__hour_graph {
