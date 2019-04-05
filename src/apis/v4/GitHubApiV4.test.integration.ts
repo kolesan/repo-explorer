@@ -112,7 +112,7 @@ test(`can get a repository by it's owner and name using 'getRepository'`, async 
 test(`can get repository star count by it's owner and name using 'getRepositoryStars'`, async () => {
   let stars = await getRepositoryStars("kolesan", "react-ts-table");
   expect(stars).toEqual(1);
-  
+
   stars = await getRepositoryStars("kolesan", "repo-explorer");
   expect(stars).toEqual(0);
 });
@@ -121,15 +121,15 @@ test(`can get repository star count by it's owner and name using 'getRepositoryS
 
 test(`can star and unstar a repository by id using 'star' and 'unstar' methods`, async () => {
   //Get id
-  let repo = await getRepository("kolesan", "react-ts-table");
+  const repo = await getRepository("kolesan", "react-ts-table");
 
   //Star
-  const starResponse: StarMutationResponse = await star(repo.id);
-  expect(starResponse.starred).toBe(true);
+  let starred = await star(repo.id);
+  expect(starred).toBe(true);
   expect((await getRepository("kolesan", "react-ts-table")).starred).toBe(true);
 
   //Unstar
-  const unstarResponse: StarMutationResponse = await unstar(repo.id);
-  expect(unstarResponse.starred).toBe(false);
+  starred = await unstar(repo.id);
+  expect(starred).toBe(false);
   expect((await getRepository("kolesan", "react-ts-table")).starred).toBe(false);
 });

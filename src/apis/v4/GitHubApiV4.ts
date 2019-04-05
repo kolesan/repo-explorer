@@ -89,18 +89,14 @@ export async function getRepositoryStars(owner: string, name: string): Promise<n
 
 
 
-export async function star(repoId: string): Promise<StarMutationResponse> {
+export async function star(repoId: string): Promise<boolean> {
   const response: GithubAddStarResponse = await client.request(starMutation, starMutationInput(repoId));
-  return {
-    starred: response.addStar.starrable.viewerHasStarred
-  }
+  return response.addStar.starrable.viewerHasStarred;
 }
 
-export async function unstar(repoId: string): Promise<StarMutationResponse> {
+export async function unstar(repoId: string): Promise<boolean> {
   const response: GithubRemoveStarResponse = await client.request(unstarMutation, starMutationInput(repoId));
-  return {
-    starred: response.removeStar.starrable.viewerHasStarred
-  }
+  return response.removeStar.starrable.viewerHasStarred;
 }
 
 function starMutationInput(repoId: string): GitHubStarMutationInput {

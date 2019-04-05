@@ -49,15 +49,15 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
   async onStarButtonClick() {
     const { repo } = this.state;
     if (repo) {
-      const response: StarMutationResponse = await (repo.starred ? unstar(repo.id) : star(repo.id));
-      const updatedRepo = { ...repo, starred: response.starred, starCount: undefined };
+      const starred = await (repo.starred ? unstar(repo.id) : star(repo.id));
+      const updatedRepo = { ...repo, starred, starCount: undefined };
       this.setState({
         repo: updatedRepo
-      })
+      });
       const stars = await getRepositoryStars(repo.owner, repo.name);
       this.setState({
         repo: { ...updatedRepo, starCount: stars }
-      })
+      });
     }
   }
 
