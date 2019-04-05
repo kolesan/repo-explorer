@@ -22,4 +22,4 @@ const ListViewContainer = connect(
   mapDispatchToProps
 )(ListView);
 
-export default ListViewContainer
+export default ListViewContainer;
