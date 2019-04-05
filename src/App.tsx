@@ -3,7 +3,7 @@ import './App.css';
 import log from './utils/Logging';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ListView from './components/ListView';
-import RepoView from './components/RepoView';
+import RepoView from './components/repo_view/RepoView';
 
 interface AppState {
   // readonly searchQuery: string;
