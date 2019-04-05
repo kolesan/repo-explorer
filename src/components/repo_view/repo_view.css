@@ -28,8 +28,6 @@
 }
 
 .repo_view__description {
-  background: url('../../resources/images/rectangle.svg') no-repeat;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -50,7 +48,6 @@
 }
 
 .repo_view__hours {
-  background: url('../../resources/images/rectangle.svg') no-repeat;
   padding: 0.6rem;
 }
 .repo_view__hours > :first-child {

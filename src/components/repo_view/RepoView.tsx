@@ -13,6 +13,7 @@ import Issues from '../repo_data/issues/Issues';
 import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import _get from 'lodash/get';
 import EffectiveHours from '../repo_data/effective_hours/EffectiveHours';
+import BalsamiqPanel from '../balsamiq/panel/BalsamiqPanel';
 
 interface RepoViewState {
   readonly repo?: Repo;
@@ -97,13 +98,17 @@ function Description(props: any) {
   const { repo, contributorCount } = props;
 
   if (!repo) {
-    return <Spinner/>;
+    return (
+      <BalsamiqPanel className="repo_view__description">
+        <Spinner style={{margin: "auto"}}/>
+      </BalsamiqPanel>
+    );
   }
   
   const { description, license, starred, language, starCount, forkCount, issueCount, commitCount }: Repo = repo;
   const effectiveHours = contributorCount ? calculateEffectiveHours(commitCount, contributorCount, issueCount) : undefined;
   return (
-    <div className="repo_view__description">
+    <BalsamiqPanel className="repo_view__description">
       <div className="repo_view__description__top">
         <div className="repo_view__description__top__description">{description ? description : "No description provided"}</div>
         <IsStarred filled={starred} />
@@ -117,7 +122,7 @@ function Description(props: any) {
         <Contributors count={contributorCount} />
         <Issues count={issueCount} />
       </div>
-    </div>
+    </BalsamiqPanel>
   );
 }
 
@@ -125,7 +130,7 @@ function HourGraph(props: any) {
   const { commitStatistics, contributorCount, issueCount } = props;
   const canCalculateGraph = commitStatistics && contributorCount !== undefined && issueCount != undefined;
   return (
-    <div className="repo_view__hours">
+    <BalsamiqPanel className="repo_view__hours">
       <div>Effective hours spent per year</div>
       <div className="repo_view__hours_graph">
         { canCalculateGraph ? 
@@ -137,9 +142,9 @@ function HourGraph(props: any) {
               <YAxis />
             </AreaChart>
           </ResponsiveContainer>
-          : <Spinner/> }
+          : <Spinner style={{margin: "auto"}} /> }
       </div>
-    </div>
+    </BalsamiqPanel>
   );
 }
 
