@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import searchQueryReducer from './reducers/SearchQueryReducer';
-import searchReducer from './reducers/SearchReducer';
+import searchReducer from './reducers/SearchStateReducer';
 
 const rootReducer = combineReducers({
   searchQuery: searchQueryReducer,

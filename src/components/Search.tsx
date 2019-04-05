@@ -7,38 +7,22 @@ import SearchResults from "./SearchResults";
 import _debounce from 'lodash/debounce';
 import log from "../utils/Logging";
 import { onlyLast, sequential, every } from "../utils/PromiseUtils";
-import { SearchStatus } from "../state_model/SearchState";
+import { SearchStatus, SearchState } from "../state_model/SearchState";
 
 interface SearchProps {
   readonly searchQuery: string;
-}
-interface SearchState {
-  readonly searchResults: RepoSearchResult;
-  readonly loadedRepos: RepoSearchResultItem[];
-  readonly itemLoadedState: boolean[];
-  readonly contributorCounts: number[];
-  readonly status: SearchStatus;
+  readonly searchState: SearchState;
+  readonly searchStateChanged: Function;
 }
 
 const LOAD_COUNT = 10;
 const MINIMUM_SYMBOLS_BEFORE_SEARCHING = 2;
 
-class Search extends Component<SearchProps, SearchState> {
+class Search extends Component<SearchProps> {
   onlyLastPromise: Function;
   toPromiseSequence: Function;
   constructor(props: SearchProps) {
     super(props);
-
-    this.state = {
-      status: SearchStatus.REST,
-      searchResults: {
-        total: 0,
-        repos: []
-      },
-      loadedRepos: [],
-      itemLoadedState: [],
-      contributorCounts: []
-    };
 
     this.onSearchQueryChanged = _debounce(this.onSearchQueryChanged, 400, { trailing: true });
     this.enqueMoreResultsRequest = this.enqueMoreResultsRequest.bind(this);
@@ -62,12 +46,12 @@ class Search extends Component<SearchProps, SearchState> {
   onSearchQueryChanged(newQuery: string) {
     log("Search query changed:", newQuery);
     if (newQuery.length > MINIMUM_SYMBOLS_BEFORE_SEARCHING) {
-      this.setState({
+      this.props.searchStateChanged({
         loadedRepos: [],
         itemLoadedState: [],
         contributorCounts: [],
         status: SearchStatus.LOADING
-      })
+      });
       this.onlyLastPromise(this.requestRepos(newQuery));
     }
   }
@@ -80,19 +64,22 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   onReposReceived(results: RepoSearchResult) {
-    let contributCountRequests = this.requestContributorCounts(this.state.loadedRepos.length, results.repos)
+    let { searchState } = this.props;
+    let previouslyLoadedRepos = searchState.loadedRepos;
+
+    let contributCountRequests = this.requestContributorCounts(previouslyLoadedRepos.length, results.repos)
     every(...contributCountRequests)
       .then(this.displayContributorCount);
 
-    let loadedRepos = [ ...this.state.loadedRepos, ...results.repos ];
+    let loadedRepos = [ ...previouslyLoadedRepos, ...results.repos ];
     let itemLoadedState = [ ...new Array(loadedRepos.length)].map(it => true);
 
-    this.setState({
+    this.props.searchStateChanged({
       searchResults: results,
       loadedRepos,
       itemLoadedState,
       status: SearchStatus.LOADED
-    });
+    })
   }
 
   requestContributorCounts(startingIndex: any, repos: RepoSearchResultItem[]): Promise<ContributorsWithIndex>[] {
@@ -114,10 +101,10 @@ class Search extends Component<SearchProps, SearchState> {
   displayContributorCount(countResult: ContributorsWithIndex) {
     let { contributorCount, index } = countResult;
 
-    let contributorCounts = [...this.state.contributorCounts];
+    let contributorCounts = [...this.props.searchState.contributorCounts];
     contributorCounts[index] = contributorCount;
     
-    this.setState({contributorCounts})
+    this.props.searchStateChanged({contributorCounts});
   }
 
   enqueMoreResultsRequest() {
@@ -130,13 +117,13 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   render() {
-    switch(this.state.status) {
+    switch(this.props.searchState.status) {
       case SearchStatus.REST:
         return null;
       case SearchStatus.LOADING:
         return <Spinner/>;
       case SearchStatus.LOADED:
-        const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.state;
+        const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.props.searchState;
         const { total } = searchResults;
 
         const resultListProps = {

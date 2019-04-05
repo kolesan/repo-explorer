@@ -1,7 +1,7 @@
 import React from 'react';
 import log from '../utils/Logging';
-import Search from './Search';
 import SearchBar from './search_bar/SearchBar';
+import SearchContainer from '../containers/SearchContainer';
 
 interface ListViewProps {
   readonly searchQuery: string;
@@ -14,7 +14,7 @@ export default function ListView(props: ListViewProps) {
   return (
     <React.Fragment>
       <SearchBar value={searchQuery} onChange={queryChange} />
-      <Search searchQuery={searchQuery}/>
+      <SearchContainer />
     </React.Fragment>
   );
 
