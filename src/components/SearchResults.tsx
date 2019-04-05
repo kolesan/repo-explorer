@@ -1,16 +1,16 @@
 import React from "react";
-import { Repo } from "../types/RepoListTypes";
 import log from "../utils/Logging";
 import InfiniteLoader, { InfiniteLoaderProps, RendererCallback, LoadMoreItemsFunction } from "react-window-infinite-loader";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import SearchResultsItem from "./search_results_item/SearchResultsItem";
 import AutoSizer from "react-virtualized-auto-sizer";
 import Spinner from "./Spinner";
+import { RepoSearchResultItem } from "../types/RepoListTypes";
 
 interface SearchProps {
   readonly loadMoreItems: LoadMoreItemsFunction;
   readonly total: number;
-  readonly loadedRepos: Repo[];
+  readonly loadedRepos: RepoSearchResultItem[];
   readonly itemLoadedState: boolean[];
   readonly contributorCounts: number[];
 }

@@ -1,8 +1,8 @@
 import './search_results_item.css';
 
 import React from "react";
-import { Repo } from "../../types/RepoListTypes";
 import Spinner from "../Spinner";
+import { Repo } from '../../types/RepoTypes';
 
 interface SearchResultsItemProps { 
   readonly repo: Repo;
