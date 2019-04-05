@@ -69,13 +69,13 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
 function Header(props: any) {
   const { owner, name, repo, onStarButtonClick } = props;
   return (
-    <div className="header">
+    <div className="repo_view__header">
       {
         repo ? 
-          <a className="header__url" href={repo.url} target="_blank">{owner}/{name}</a> :
+          <a className="repo_view__header__url" href={repo.url} target="_blank">{owner}/{name}</a> :
           <span>{owner}/{name}</span>
       }
-      <button className="header__star_button"
+      <button className="repo_view__header__star_button"
         disabled={!repo}
         onClick={onStarButtonClick}>
         {repo ? repo.starred ? "Unstar" : "Star" : "Star"}
@@ -93,12 +93,12 @@ function Description(props: any) {
   
   const { description, license, starred, language, starCount, forkCount, issueCount }: Repo = repo;
   return (
-    <div className="repo_description">
-      <div className="repo_description__header">
-        <div className="search_results_item_panel__header__description">{description ? description : "No description provided"}</div>
+    <div className="repo_view__description">
+      <div className="repo_view__description__top">
+        <div className="repo_view__description__top__description">{description ? description : "No description provided"}</div>
         <IsStarred filled={starred} />
       </div>
-      <div className="repo_description__body">
+      <div className="repo_view__description__bottom">
         <div>{license ? license.toUpperCase() : "Unknown"}</div>
         <div>{language}</div>
         <Stars count={starCount} />
@@ -113,7 +113,7 @@ function Description(props: any) {
 function HourGraph(props: any) {
   const { commitStatistics } = props;
   return (
-    <div className="hour_graph">
+    <div className="repo_view__hour_graph">
       { commitStatistics ? <div>{commitStatistics}</div> : <Spinner/> }
     </div>
   );

@@ -2,8 +2,34 @@
   width: 100%;
   height: 100%;
 
+  display: grid;
+  grid-template-columns: 75vw;
+  grid-template-rows: 2rem auto auto;
+  justify-content: center;
+  align-content: center;
+}
+
+.repo_view__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.repo_view__description {
+  background: url('../../resources/images/rectangle.svg') no-repeat;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+.repo_view__description__top {
+  display: flex;
+}
+.repo_view__description__bottom {
+  display: flex;
+}
+
+.repo_view__hour_graph {
+  background: url('../../resources/images/rectangle.svg') no-repeat;
 }
