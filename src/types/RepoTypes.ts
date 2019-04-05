@@ -7,7 +7,7 @@ export interface Repo {
   readonly url: string;
   readonly starred: boolean;
   readonly language: string;
-  readonly starCount: number;
+  readonly starCount?: number;
   readonly forkCount: number;
   readonly issueCount: number;
   readonly commitCount: number;

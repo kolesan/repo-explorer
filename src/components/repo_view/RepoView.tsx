@@ -1,7 +1,7 @@
 import './repo_view.css';
 import React, { Component } from 'react';
 import log from '../../utils/Logging';
-import { getRepository, star, unstar } from '../../apis/v4/GitHubApiV4';
+import { getRepository, star, unstar, getRepositoryStars } from '../../apis/v4/GitHubApiV4';
 import { Repo, StarMutationResponse } from '../../types/RepoTypes';
 import Spinner from '../Spinner';
 import { commitStats, contributorCount } from '../../apis/v3/GitHubApiV3';
@@ -50,8 +50,13 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
     const { repo } = this.state;
     if (repo) {
       const response: StarMutationResponse = await (repo.starred ? unstar(repo.id) : star(repo.id));
+      const updatedRepo = { ...repo, starred: response.starred, starCount: undefined };
       this.setState({
-        repo: { ...repo, starred: response.starred }
+        repo: updatedRepo
+      })
+      const stars = await getRepositoryStars(repo.owner, repo.name);
+      this.setState({
+        repo: { ...updatedRepo, starCount: stars }
       })
     }
   }
