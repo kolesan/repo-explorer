@@ -10,6 +10,7 @@ import Stars from '../repo_data/stars/Stars';
 import Forks from '../repo_data/forks/Forks';
 import Contributors from '../repo_data/contributors/Contributors';
 import Issues from '../repo_data/issues/Issues';
+import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 interface RepoViewState {
   readonly repo?: Repo;
@@ -37,8 +38,7 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
   async componentDidMount() {
     const { owner, name } = this.props.match.params;
     this.setState({ repo: await getRepository(owner, name) });
-    contributorCount(owner, name)
-      .then(contributorCount => this.setState({ contributorCount }));
+    this.setState({ contributorCount: await contributorCount(owner, name) });
     commitStats(owner, name)
       .then(commitStatistics => this.setState({ commitStatistics }))
   }
@@ -60,7 +60,7 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
       <div className="repo_view">
         <Header owner={owner} name={name} repo={repo} onStarButtonClick={this.onStarButtonClick} />
         <Description repo={repo} contributorCount={contributorCount} />
-        <HourGraph commitStatistics={commitStatistics} />
+        <HourGraph commitStatistics={commitStatistics} contributorCount={contributorCount} />
       </div>
     );
   }
@@ -111,12 +111,31 @@ function Description(props: any) {
 }
 
 function HourGraph(props: any) {
-  const { commitStatistics } = props;
+  const { commitStatistics, contributorCount } = props;
   return (
-    <div className="repo_view__hour_graph">
-      { commitStatistics ? <div>{commitStatistics}</div> : <Spinner/> }
+    <div className="repo_view__hours">
+      <div>Effective hours spent per year</div>
+      <div className="repo_view__hours_graph">
+        { commitStatistics ? 
+          <ResponsiveContainer width="95%" height={400}>
+            <AreaChart data={commitStatisticToLineChartFormat(commitStatistics, contributorCount)}>
+              <Area type="monotone" dataKey="value" stroke="gray" fill="lightgray" />
+              <CartesianGrid stroke="#ccc" />
+              <XAxis dataKey="name" />
+              <YAxis />
+            </AreaChart>
+          </ResponsiveContainer>
+          : <Spinner/> }
+      </div>
     </div>
   );
+}
+
+function commitStatisticToLineChartFormat(commitStatistics: number[], contributorCount: number): object[] {
+  let lineChartData = commitStatistics.map(commitCount => ({ name: "", value: commitCount }));
+  lineChartData.forEach((obj, i) => obj.name = String(i + 1));
+  log(lineChartData);
+  return lineChartData;
 }
 
 export default RepoView;
