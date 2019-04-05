@@ -8,6 +8,7 @@ import Stars from '../repo_data/stars/Stars';
 import Forks from '../repo_data/forks/Forks';
 import Contributors from '../repo_data/contributors/Contributors';
 import Issues from '../repo_data/issues/Issues';
+import BalsamiqPanel from '../balsamiq/panel/BalsamiqPanel';
 
 interface SearchResultsItemProps { 
   readonly repo: Repo;
@@ -29,7 +30,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
   const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount }: Repo = repo;
   return (
     <div className="search_results_item" style={style}>
-      <div className="search_results_item_panel">
+      <BalsamiqPanel className="search_results_item_panel">
         <img className="search_results_item_panel__background" src="resources/images/rectangle.svg"/>
         <div className="search_results_item_panel__header">
           <a className="search_results_item_panel__header__url" href={url} target="_blank">{owner}/{name}</a>
@@ -44,7 +45,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
           <Contributors count={contributorCount} />
           <Issues count={issueCount} />
         </div>
-      </div>
+      </BalsamiqPanel>
     </div>
   );
 }
