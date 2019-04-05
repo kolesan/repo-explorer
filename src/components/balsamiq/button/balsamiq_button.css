@@ -1,0 +1,8 @@
+.balsamiq_button {
+  background-image: url('./button.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 0.2rem 1rem;
+
+  min-width: 110px;
+}

@@ -14,6 +14,7 @@ import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } fro
 import _get from 'lodash/get';
 import EffectiveHours from '../repo_data/effective_hours/EffectiveHours';
 import BalsamiqPanel from '../balsamiq/panel/BalsamiqPanel';
+import BalsamiqButton from '../balsamiq/button/BalsamiqButton';
 
 interface RepoViewState {
   readonly repo?: Repo;
@@ -85,11 +86,11 @@ function Header(props: any) {
           <a className="repo_view__header__url" href={repo.url} target="_blank">{owner}/{name}</a> :
           <span>{owner}/{name}</span>
       }
-      <button className="repo_view__header__star_button"
+      <BalsamiqButton className="repo_view__header__star_button"
         disabled={!repo}
         onClick={onStarButtonClick}>
         {repo ? repo.starred ? "Unstar" : "Star" : "Star"}
-      </button>
+      </BalsamiqButton>
     </div>
   );
 }
