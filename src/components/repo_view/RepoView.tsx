@@ -12,6 +12,7 @@ import Contributors from '../repo_data/contributors/Contributors';
 import Issues from '../repo_data/issues/Issues';
 import { CartesianGrid, XAxis, YAxis, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import _get from 'lodash/get';
+import EffectiveHours from '../repo_data/effective_hours/effective_hours';
 
 interface RepoViewState {
   readonly repo?: Repo;
@@ -94,7 +95,8 @@ function Description(props: any) {
     return <Spinner/>;
   }
   
-  const { description, license, starred, language, starCount, forkCount, issueCount }: Repo = repo;
+  const { description, license, starred, language, starCount, forkCount, issueCount, commitCount }: Repo = repo;
+  const effectiveHours = contributorCount ? commitCount * contributorCount / issueCount : undefined;
   return (
     <div className="repo_view__description">
       <div className="repo_view__description__top">
@@ -104,6 +106,7 @@ function Description(props: any) {
       <div className="repo_view__description__bottom">
         <div>{license ? license.toUpperCase() : "Unknown"}</div>
         <div>{language}</div>
+        <EffectiveHours count={effectiveHours} />
         <Stars count={starCount} />
         <Forks count={forkCount} />
         <Contributors count={contributorCount} />
