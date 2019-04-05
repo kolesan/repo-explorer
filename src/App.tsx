@@ -5,9 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import RepoView from './components/repo_view/RepoView';
 import ListViewContainer from './containers/ListViewContainer';
 
-interface AppState {
-  // readonly searchQuery: string;
-}
+interface AppState {}
 interface AppProps {}
 
 class App extends Component<AppProps, AppState> {
