@@ -18,13 +18,11 @@ class App extends Component<AppProps, AppState> {
   render() {
     return (
       <Router>
-        <div>
-          <Switch>
-            <Route exact path="/repos" component={ListView} />
-            <Route path="/repos/:owner/:name" component={RepoView} />
-            <Route component={NoMatch} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/repos" component={ListView} />
+          <Route path="/repos/:owner/:name" component={RepoView} />
+          <Route component={NoMatch} />
+        </Switch>
       </Router>
     );
   }
