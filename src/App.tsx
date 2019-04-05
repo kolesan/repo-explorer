@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import log from './utils/Logging';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ListView from './components/ListView';
 import RepoView from './components/repo_view/RepoView';
+import ListViewContainer from './containers/ListViewContainer';
 
 interface AppState {
   // readonly searchQuery: string;
@@ -19,7 +19,7 @@ class App extends Component<AppProps, AppState> {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={ListView} />
+          <Route exact path="/" component={ListViewContainer} />
           <Route path="/repos/:owner/:name" component={RepoView} />
           <Route component={NoMatch} />
         </Switch>

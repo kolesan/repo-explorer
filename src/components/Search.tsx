@@ -7,6 +7,7 @@ import SearchResults from "./SearchResults";
 import _debounce from 'lodash/debounce';
 import log from "../utils/Logging";
 import { onlyLast, sequential, every } from "../utils/PromiseUtils";
+import { SearchStatus } from "../state_model/SearchState";
 
 interface SearchProps {
   readonly searchQuery: string;
@@ -16,10 +17,7 @@ interface SearchState {
   readonly loadedRepos: RepoSearchResultItem[];
   readonly itemLoadedState: boolean[];
   readonly contributorCounts: number[];
-  readonly status: Status;
-}
-enum Status {
-  REST, LOADING, LOADED
+  readonly status: SearchStatus;
 }
 
 const LOAD_COUNT = 10;
@@ -32,7 +30,7 @@ class Search extends Component<SearchProps, SearchState> {
     super(props);
 
     this.state = {
-      status: Status.REST,
+      status: SearchStatus.REST,
       searchResults: {
         total: 0,
         repos: []
@@ -68,7 +66,7 @@ class Search extends Component<SearchProps, SearchState> {
         loadedRepos: [],
         itemLoadedState: [],
         contributorCounts: [],
-        status: Status.LOADING
+        status: SearchStatus.LOADING
       })
       this.onlyLastPromise(this.requestRepos(newQuery));
     }
@@ -93,7 +91,7 @@ class Search extends Component<SearchProps, SearchState> {
       searchResults: results,
       loadedRepos,
       itemLoadedState,
-      status: Status.LOADED
+      status: SearchStatus.LOADED
     });
   }
 
@@ -133,11 +131,11 @@ class Search extends Component<SearchProps, SearchState> {
 
   render() {
     switch(this.state.status) {
-      case Status.REST:
+      case SearchStatus.REST:
         return null;
-      case Status.LOADING:
+      case SearchStatus.LOADING:
         return <Spinner/>;
-      case Status.LOADED:
+      case SearchStatus.LOADED:
         const { searchResults, loadedRepos, itemLoadedState, contributorCounts } = this.state;
         const { total } = searchResults;
 

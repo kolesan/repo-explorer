@@ -1,37 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import log from '../utils/Logging';
 import Search from './Search';
 import SearchBar from './search_bar/SearchBar';
 
-interface ListViewState {
+interface ListViewProps {
   readonly searchQuery: string;
-}
-interface ListViewProps {}
-
-class ListView extends Component<ListViewProps, ListViewState> {
-  constructor(props: ListViewProps) {
-    super(props);
-    this.state = {
-      searchQuery: ''
-    };
-    this.queryChange = this.queryChange.bind(this);
-  }
-
-  queryChange(event: any) {
-    this.setState({
-      searchQuery: event.target.value
-    });
-  }
-
-  render() {
-    const { searchQuery } = this.state;
-    return (
-      <React.Fragment>
-        <SearchBar value={searchQuery} onChange={this.queryChange} />
-        <Search searchQuery={searchQuery}/>
-      </React.Fragment>
-    );
-  }
+  readonly searchQueryChanged: Function;
 }
 
-export default ListView;
+export default function ListView(props: ListViewProps) {
+  const { searchQuery, searchQueryChanged } = props;
+
+  return (
+    <React.Fragment>
+      <SearchBar value={searchQuery} onChange={queryChange} />
+      <Search searchQuery={searchQuery}/>
+    </React.Fragment>
+  );
+
+  function queryChange(event: any) {
+    searchQueryChanged(event.target.value);
+  }
+
+}
