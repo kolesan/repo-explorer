@@ -1,0 +1,8 @@
+.effecite_hour_count {
+  display: flex;
+  align-items: center;
+}
+.effecite_hour_count_image {
+  height: 1.5rem;
+  margin-right: 0.3rem;
+}
