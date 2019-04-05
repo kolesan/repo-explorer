@@ -33,7 +33,7 @@
   grid-template-rows: 1fr;
 }
 
-.search_results_item_panel__header__url {
+.search_results_item_panel__header__name {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

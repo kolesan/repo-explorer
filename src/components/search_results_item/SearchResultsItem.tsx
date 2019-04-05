@@ -34,7 +34,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
       <Link to={`repos/${owner}/${name}`}>
         <BalsamiqPanel className="search_results_item_panel">
           <div className="search_results_item_panel__header">
-            {owner}/{name}
+            <span className="search_results_item_panel__header__name">{owner}/{name}</span>
             <div className="search_results_item_panel__header__description">{description ? description : "No description provided"}</div>
             <IsStarred filled={starred} />
           </div>
