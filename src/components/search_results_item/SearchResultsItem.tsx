@@ -3,6 +3,11 @@ import './search_results_item.css';
 import React from "react";
 import Spinner from "../Spinner";
 import { Repo } from '../../types/RepoTypes';
+import IsStarred from '../repo_data/IsStarred';
+import Stars from '../repo_data/Stars';
+import Forks from '../repo_data/Forks';
+import Contributors from '../repo_data/Contributors';
+import Issues from '../repo_data/Issues';
 
 interface SearchResultsItemProps { 
   readonly repo: Repo;
@@ -29,7 +34,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
         <div className="search_results_item_panel__header">
           <a className="search_results_item_panel__header__url" href={url} target="_blank">{owner}/{name}</a>
           <div className="search_results_item_panel__header__description">{description ? description : "No description provided"}</div>
-          <Star filled={starred} />
+          <IsStarred filled={starred} />
         </div>
         <div className="search_results_item_panel__body">
           <div>{license ? license.toUpperCase() : "Unknown"}</div>
@@ -42,49 +47,4 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
       </div>
     </div>
   );
-}
-
-function Issues(props: any) {
-  return (
-    <div className="issue_count">
-      <img className="issue_count_image" src="resources/images/issues.png" />
-      {props.count}
-    </div>
-  );
-}
-
-function Contributors(props: any) {
-  return (
-    <div className="contirbutor_count">
-      <img className="contirbutor_count_image" src="resources/images/contributors.png" />
-      { props.count !== undefined ? 
-          props.count :
-          <Spinner className="contirbutor_count__spinner"/> }
-    </div>
-  );
-}
-
-function Forks(props: any) {
-  return (
-    <div className="fork_count">
-      <img className="fork_count_image" src="resources/images/forks.png" />
-      {props.count}
-    </div>
-  );
-}
-
-function Stars(props: any) {
-  return (
-    <div className="stars_count">
-      <img className="star_count_image" src="resources/images/star-filled.png" />
-      {props.count}
-    </div>
-  );
-}
-
-function Star(props: any) {
-  if (props.filled) {
-    return <img className="stared_status_image" src="resources/images/star-filled.png" />
-  }
-  return <img className="stared_status_image" src="resources/images/star.png" />
 }
