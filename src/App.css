@@ -40,6 +40,7 @@ body {
 
 a {
   color: #0C5394;
+  text-decoration: none;
 }
 a:visited {
   color: #670d94;
