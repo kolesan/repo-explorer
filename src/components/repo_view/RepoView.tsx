@@ -28,6 +28,7 @@ interface RepoViewProps {
       readonly name: string;
     }
   }
+  readonly repoStarStateChanged: Function;
 }
 
 class RepoView extends Component<RepoViewProps, RepoViewState> {
@@ -51,15 +52,26 @@ class RepoView extends Component<RepoViewProps, RepoViewState> {
   async onStarButtonClick() {
     const { repo } = this.state;
     if (repo) {
+      const { owner, name } = repo;
+      
       const starred = await (repo.starred ? unstar(repo.id) : star(repo.id));
-      const updatedRepo = { ...repo, starred, starCount: undefined };
+      let updatedRepo: Repo = { ...repo, starred, starCount: undefined };
       this.setState({
         repo: updatedRepo
       });
-      const stars = await getRepositoryStars(repo.owner, repo.name);
+
+      const stars = await getRepositoryStars(owner, name);
+      updatedRepo = { ...updatedRepo, starCount: stars };
       this.setState({
-        repo: { ...updatedRepo, starCount: stars }
+        repo: updatedRepo
       });
+
+      this.props.repoStarStateChanged({
+        owner,
+        name,
+        starred: updatedRepo.starred,
+        starCount: updatedRepo.starCount
+      })
     }
   }
 
