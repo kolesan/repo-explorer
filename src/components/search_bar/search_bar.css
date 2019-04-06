@@ -1,23 +1,16 @@
 .search_bar {
-  --width: 400px;
-  --height: 40px;
-}
-
-.search_bar {
-  width: var(--width);
-  height: var(--height);
+  min-width: 200px;
+  width: 75vw;
+  max-width: 400px;
+  height: 40px;
 
   position: relative;
 
   display: flex;
   align-items: center;
-}
 
-.search_bar__background {
-  width: var(--width);
-  height: var(--height);
-  position: absolute;
-  z-index: -1;
+  background-image: url('/resources/images/oval-input.png');
+  background-size: 100% 100%;
 }
 
 .search_bar__icon {
