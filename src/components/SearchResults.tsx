@@ -29,7 +29,7 @@ export default function SearchResults(props: SearchProps) {
   const listProps = {
     itemData: loadedRepos,
     itemCount: total,
-    itemSize: 110,
+    itemSize: 120,
     initialScrollOffset: scrollOffset
   }
   
