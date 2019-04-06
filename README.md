@@ -3,6 +3,8 @@
 A web app that let's you search github repositories and displays results in a list.<br>
 List items can be clicked on to enter a detailed view for a single repository.
 
+If you want to check it out without running it yourself, production build is hosted [here](https://git-explorer.netlify.com).
+
 ## Github token
 
 This app uses GitHub api v4 which requires you to be authenticated.<br>
