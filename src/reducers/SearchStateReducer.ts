@@ -1,6 +1,5 @@
 import { SearchStateChangedAction, SEARCH_STATE_CHANGED } from "../actions/SearchStateChangedAction";
 import { SearchState, SearchStatus } from "../state_model/SearchState";
-import _merge from "lodash/merge";
 
 const defaultSearchState = {
   status: SearchStatus.REST,
@@ -16,7 +15,7 @@ const defaultSearchState = {
 
 export default function searchStateReducer(state: SearchState = defaultSearchState, action: SearchStateChangedAction): SearchState {
   if (action.type == SEARCH_STATE_CHANGED) {
-    return _merge({}, state, action.payload);
+    return Object.assign({}, state, action.payload);
   }
   return state;
 }
