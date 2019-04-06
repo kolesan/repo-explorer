@@ -28,7 +28,7 @@ export default function SearchResultsItem(props: SearchResultsItemProps) {
     );
   }
 
-  const { name, owner, description, license, url, starred, language, starCount, forkCount, issueCount }: Repo = repo;
+  const { name, owner, description, license, starred, language, starCount, forkCount, issueCount }: Repo = repo;
   return (
     <div className="search_results_item" style={style}>
       <Link to={`repos/${owner}/${name}`}>
