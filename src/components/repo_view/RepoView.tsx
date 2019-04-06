@@ -135,7 +135,7 @@ function HourGraph(props: any) {
       <div>Effective hours spent per year</div>
       <div className="repo_view__hours_graph">
         { canCalculateGraph ? 
-          <ResponsiveContainer width="95%" height={400}>
+          <ResponsiveContainer width="95%" height={250}>
             <AreaChart data={commitStatisticToLineChartFormat(commitStatistics, contributorCount, issueCount)}>
               <CartesianGrid stroke="#ccc" />
               <Area type="monotone" dataKey="commits" stroke="red" />

@@ -3,8 +3,8 @@
   height: 100%;
 
   display: grid;
-  grid-template-columns: minmax(450px, 1300px);
-  grid-template-rows: 2rem auto auto;
+  grid-template-columns: minmax(400px, 1300px);
+  grid-template-rows: 2rem minmax(120px, auto) minmax(300px, auto);
   justify-content: center;
   align-content: center;
   padding: 0 3rem;

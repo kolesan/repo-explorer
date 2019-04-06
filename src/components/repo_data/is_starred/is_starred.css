@@ -1,5 +1,6 @@
 .stared_status_image {
-  background-size: 100% 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
   width: 2rem;
   height: 2rem;
   margin-left: auto;
