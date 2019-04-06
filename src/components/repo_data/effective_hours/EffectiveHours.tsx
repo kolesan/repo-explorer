@@ -5,7 +5,7 @@ import Spinner from '../../Spinner';
 export default function EffectiveHours(props: any) {
   return (
     <div className="effecite_hour_count">
-      <img className="effecite_hour_count_image" src="/resources/images/clock.png" />
+      <div className="effecite_hour_count_image" />
       { 
         props.count !== undefined ? 
           Math.floor(props.count).toLocaleString('en-US') :

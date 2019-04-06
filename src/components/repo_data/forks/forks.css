@@ -3,6 +3,9 @@
   align-items: flex-end;
 }
 .fork_count_image {
+  background-image: url('/resources/images/forks.png');
+  background-size: 100% 100%;
+  width: 1.6rem;
   height: 1.6rem;
   margin-bottom: 0.1rem;
 }

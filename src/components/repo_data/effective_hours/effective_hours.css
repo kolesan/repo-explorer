@@ -3,6 +3,9 @@
   align-items: center;
 }
 .effecite_hour_count_image {
+  background-image: url('/resources/images/clock.png');
+  background-size: 100% 100%;
+  width: 1.5rem;
   height: 1.5rem;
   margin-right: 0.3rem;
 }

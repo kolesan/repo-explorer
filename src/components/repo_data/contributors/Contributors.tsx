@@ -5,7 +5,7 @@ import Spinner from '../../Spinner';
 export default function Contributors(props: any) {
   return (
     <div className="contributor_count">
-      <img className="contributor_count_image" src="/resources/images/contributors.png" />
+      <div className="contributor_count_image" />
       { 
         props.count !== undefined ? 
           props.count.toLocaleString('en-US') :

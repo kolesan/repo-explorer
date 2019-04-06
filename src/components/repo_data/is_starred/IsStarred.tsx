@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function IsStarred(props: any) {
   if (props.filled) {
-    return <img className="stared_status_image" src="/resources/images/star-filled.png" />
+    return <div className="stared_status_image filled" />
   }
-  return <img className="stared_status_image" src="/resources/images/star.png" />
+  return <div className="stared_status_image outline" />
 }

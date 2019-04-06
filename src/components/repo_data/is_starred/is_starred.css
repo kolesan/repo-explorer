@@ -1,4 +1,12 @@
 .stared_status_image {
+  background-size: 100% 100%;
+  width: 2rem;
   height: 2rem;
   margin-left: auto;
+}
+.stared_status_image.filled {
+  background-image: url('/resources/images/star-filled.png');
+}
+.stared_status_image.outline {
+  background-image: url('/resources/images/star.png');
 }
