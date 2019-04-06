@@ -101,7 +101,7 @@ function Header(props: any) {
       <BalsamiqButton className="repo_view__header__star_button"
         disabled={!repo}
         onClick={onStarButtonClick}>
-        {repo ? repo.starred ? "Unstar" : "Star" : "Star"}
+        {repo ? repo.starred ? "Unstar" : "Star" : ""}
       </BalsamiqButton>
     </div>
   );

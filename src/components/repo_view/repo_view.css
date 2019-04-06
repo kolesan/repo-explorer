@@ -19,6 +19,7 @@
   align-items: center;
 }
 .repo_view__header__star_button {
+  min-height: 2rem;
   background-color: #9FC48F;
 }
 
