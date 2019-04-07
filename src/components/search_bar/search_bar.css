@@ -14,6 +14,8 @@
 }
 
 .search_bar__icon {
+  width: 1.3rem;
+  height: 1.3rem;
   margin: 0 0.5rem;
 }
 
@@ -26,4 +28,5 @@
   outline: none;
   
   flex-grow: 1;
+  max-width: 85%;
 }

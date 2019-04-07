@@ -10,7 +10,7 @@ export default function SearchBar(props: SearchBarProps) {
   const { value, onChange } = props;
   return (
     <div className="search_bar">
-      <span className="search_bar__icon">&#x1f50d;</span>
+      <img className="search_bar__icon" src="resources/images/search.png"/>
       <input className="search_bar__input" placeholder="Search" value={value} onChange={onChange}></input>
     </div>
   )
